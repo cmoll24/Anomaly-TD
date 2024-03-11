@@ -3,7 +3,7 @@ class_name Enemy
 
 @onready var anim_player = $AnimatedSprite2D
 
-const DEFAULT_SPEED = 20
+var DEFAULT_SPEED = 20
 var speed_mult = 1
 
 var target

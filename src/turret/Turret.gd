@@ -1,15 +1,25 @@
 extends Node2D
+class_name Turret
 
 @onready var rotation_point = $rotation_point
 @onready var attack_range = $attack_range
 @onready var attack = $rotation_point/attack
+@onready var placing_grid = $Placing_grid
 var target
+var disabled = true
 
 var offset = Vector2(24,24)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	attack_range.monitoring = false
 	attack.visible = false
+	placing_grid.visible = true
+
+func place():
+	attack_range.monitoring = true
+	placing_grid.visible = false
+	disabled = false
 
 func calculate_closest_target():
 	var closest_target = null
@@ -23,6 +33,12 @@ func calculate_closest_target():
 	return closest_target
 
 func _process(_delta): #make it slowaly turn, not instant
+	if disabled:
+		position = (get_global_mouse_position()/32).floor()*32
+		return
+	attack_process()
+
+func attack_process():
 	if target and is_instance_valid(target):
 		var target_direction = (get_global_position()+offset).angle_to_point(target.global_position) + deg_to_rad(90)
 		rotation_point.rotation = lerp_angle(rotation_point.rotation, target_direction, 0.05)
@@ -35,7 +51,7 @@ func _process(_delta): #make it slowaly turn, not instant
 	else:
 		attack.visible = false
 
-func _on_area_2d_body_entered(_body):
+func _on_attack_range_body_entered(_body):
 	target = calculate_closest_target()
 
 func _on_attack_range_body_exited(_body):

@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://dd0kkxy8xgia2"]
+
+[ext_resource type="Script" path="res://src/turret/Laser.gd" id="1_k6k8y"]
+[ext_resource type="Texture2D" uid="uid://dhmgwdt7je8hi" path="res://assets/turrets/small_base.png" id="2_j85dk"]
+[ext_resource type="Texture2D" uid="uid://j2aofuxsi08k" path="res://assets/turrets/laser-attack.png" id="3_5hy2r"]
+[ext_resource type="Texture2D" uid="uid://ddoraqpy25syy" path="res://assets/turrets/weapons32x32.png" id="4_bvkhn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sehbr"]
+atlas = ExtResource("4_bvkhn")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0gv60"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sehbr")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvoy7"]
+size = Vector2(6, 116)
+
+[node name="Laser" type="Node2D"]
+script = ExtResource("1_k6k8y")
+
+[node name="Placing_grid" type="ColorRect" parent="."]
+z_index = 2
+offset_top = -96.0
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
+color = Color(1, 0, 0, 0.470588)
+
+[node name="Base" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(16, 16)
+texture = ExtResource("2_j85dk")
+
+[node name="rotation_point" type="Node2D" parent="."]
+z_index = 1
+position = Vector2(16, 16)
+
+[node name="attack" type="TextureRect" parent="rotation_point"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_right = 12.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 3.14159
+texture = ExtResource("3_5hy2r")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Gun" type="AnimatedSprite2D" parent="rotation_point"]
+sprite_frames = SubResource("SpriteFrames_0gv60")
+autoplay = "default"
+
+[node name="attack_range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_range"]
+position = Vector2(15, -38)
+shape = SubResource("RectangleShape2D_wvoy7")
+
+[connection signal="body_entered" from="attack_range" to="." method="_on_attack_range_body_entered"]
+[connection signal="body_exited" from="attack_range" to="." method="_on_attack_range_body_exited"]

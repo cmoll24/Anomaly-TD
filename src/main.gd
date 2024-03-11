@@ -2,8 +2,9 @@ extends Control
 
 @onready var unit_tree : Node2D = $Ysort/creatures
 @onready var tower_tree : Node2D = $Ysort/towers
-@onready var scorpion = load("res://src/enemy/scorpion.tscn")
-@onready var turret = load("res://src/turret/Turret.tscn")
+@onready var scorpion = load("res://src/enemy/Enemy.tscn")
+@onready var magma_crab = load("res://src/enemy/MagmaCrab.tscn")
+@onready var turret = load("res://src/turret/Laser.tscn")
 @onready var terrain : TileMap = $Ysort/Terrain
 @onready var towers : TileMap = $Ysort/Towers32x32
 @onready var timer = $Timer
@@ -17,6 +18,8 @@ var astargrid : AStarGrid2D
 
 var enemy_path_start : Vector2
 var enemy_path_end : Vector2
+
+var placing_turret
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -86,10 +89,11 @@ func _draw():
 			if path and len(path) > 2:
 				self.draw_polyline(path,Color.RED,2)
 	'''
+	'''
 	var mouse_pos = get_global_mouse_position()
 	if place_area.has_point(mouse_pos):
 		draw_rect(Rect2((mouse_pos/32).floor()*32,Vector2(32,32)),Color(1,0,0,0.5))
-
+	'''
 	#draw_rect(place_area,Color(0,0,1,0.5))
 	'''
 	for i in range(grid_screen.size.x-2):
@@ -113,14 +117,18 @@ func _on_timer_timeout():
 	timer.start()
 
 func spawn_unit(pos):
-	var enemy = scorpion.instantiate()
+	var enemy
+	if randi_range(0,3) == 0:
+		enemy = magma_crab.instantiate()
+	else:
+		enemy = scorpion.instantiate()
 	enemy.set_position(pos.snapped(Vector2(GlobalVariables.GRID_CELL_SIZE)) + Vector2(16,16))
 	unit_tree.add_child(enemy)
 	#print(create_navpath(enemy.position,enemy.target))
 	enemy.start_navigation(create_navpath(enemy.position))
 	enemy.nav_agent = astargrid
 
-func place_turret(pos):
+func place_turret(t, pos):
 	var grid_pos = (pos / Vector2(32,32)).floor()
 	
 	var grid_pos2i = Vector2i(grid_pos)
@@ -128,21 +136,23 @@ func place_turret(pos):
 		
 		if set_nav_collison(grid_pos) == false:
 			return
-		
-		var t = turret.instantiate()
 		t.set_position(grid_pos*Vector2(32,32))
-		tower_tree.add_child(t)
-		
-		print(grid_pos2i)
+		t.place()
+		placing_turret = null
 		#towers.set_cells_terrain_connect(0, [grid_pos2i], 0, 0)
 	
+		update_enemy_pathing()
+
+func update_enemy_pathing():
 	for child in unit_tree.get_children():
 		if child is Enemy:
 			child.start_navigation(create_navpath(child.position))
 
 func _unhandled_input(event):
-	if event.is_action_pressed("click"):
-		print('click')
+	if event.is_action_pressed("click") and placing_turret != null:
 		var mouse_pos = get_global_mouse_position()
 		if place_area.has_point(mouse_pos):
-			place_turret(mouse_pos)
+			place_turret(placing_turret, mouse_pos)
+	elif event.is_action_pressed("debug"):
+		placing_turret = turret.instantiate()
+		tower_tree.add_child(placing_turret)
