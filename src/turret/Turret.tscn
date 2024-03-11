@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://by8vnspp4d8vi"]
+
+[ext_resource type="Script" path="res://src/turret/Turret.gd" id="1_yj4np"]
+[ext_resource type="Texture2D" uid="uid://dhmgwdt7je8hi" path="res://assets/turrets/small_base.png" id="2_73tdw"]
+[ext_resource type="Texture2D" uid="uid://ddoraqpy25syy" path="res://assets/turrets/weapons32x32.png" id="3_n0fwn"]
+[ext_resource type="Texture2D" uid="uid://bhob7aleg1sin" path="res://icon.svg" id="3_s15au"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hwy61"]
+atlas = ExtResource("3_n0fwn")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u447r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hwy61")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5plb2"]
+radius = 48.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h6jt4"]
+size = Vector2(32, 32)
+
+[node name="Turret" type="Node2D"]
+script = ExtResource("1_yj4np")
+
+[node name="Base" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(16, 16)
+texture = ExtResource("2_73tdw")
+
+[node name="rotation_point" type="Node2D" parent="."]
+z_index = 1
+position = Vector2(16, 16)
+
+[node name="attack" type="Sprite2D" parent="rotation_point"]
+position = Vector2(-0.5, -15)
+scale = Vector2(0.0546875, 0.328125)
+texture = ExtResource("3_s15au")
+
+[node name="Gun" type="AnimatedSprite2D" parent="rotation_point"]
+sprite_frames = SubResource("SpriteFrames_u447r")
+autoplay = "default"
+
+[node name="attack_range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_range"]
+position = Vector2(16, 16)
+shape = SubResource("CircleShape2D_5plb2")
+
+[node name="Hitbox" type="StaticBody2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_h6jt4")
+
+[connection signal="area_entered" from="attack_range" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="attack_range" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="attack_range" to="." method="_on_attack_range_body_exited"]
