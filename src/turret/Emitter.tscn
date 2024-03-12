@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgpgx3has3nm"]
+
+[ext_resource type="Script" path="res://src/turret/Emitter.gd" id="1_msngs"]
+[ext_resource type="Texture2D" uid="uid://dhmgwdt7je8hi" path="res://assets/turrets/small_base.png" id="2_63857"]
+
+[node name="Emitter" type="Node2D"]
+script = ExtResource("1_msngs")
+
+[node name="rotation_point" type="Node2D" parent="."]
+position = Vector2(16, 16)
+
+[node name="Placing_grid" type="ColorRect" parent="rotation_point"]
+z_index = 2
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+mouse_filter = 2
+color = Color(1, 0, 0, 0.470588)
+metadata/_edit_use_anchors_ = true
+
+[node name="Effect" type="ColorRect" parent="rotation_point"]
+z_index = -1
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+mouse_filter = 2
+color = Color(0.286275, 0.498039, 1, 0.313726)
+metadata/_edit_use_anchors_ = true
+
+[node name="Base" type="Sprite2D" parent="rotation_point"]
+texture = ExtResource("2_63857")

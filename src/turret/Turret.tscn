@@ -61,6 +61,7 @@ offset_right = 48.0
 offset_bottom = 48.0
 mouse_filter = 2
 color = Color(1, 0, 0, 0.470588)
+metadata/_edit_use_anchors_ = true
 
 [node name="Base" type="Sprite2D" parent="rotation_point"]
 texture = ExtResource("2_73tdw")

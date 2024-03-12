@@ -1,29 +1,22 @@
-extends Node2D
+extends Tower
 class_name Turret
 
 @onready var rotation_point = $rotation_point
 @onready var gun_rotation = $rotation_point/gun_rotation
 @onready var attack_collision = $rotation_point/attack_collision
 @onready var attack = $rotation_point/gun_rotation/attack
-@onready var placing_grid = $rotation_point/Placing_grid
 @onready var attack_cooldown = $attack_cooldown
-var target
-var disabled = true
-var attack_range : Array[Rect2i] = [Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3)]
-
-var offset = Vector2(24,24)
-
-var can_attack = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	placing_grid.visible = true
+	attack_weight_area = [Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3)]
 	attack_collision.monitoring = false
 	attack.visible = false
-	placing_grid.visible = true
 
-func get_attack_range():
+func get_attack_weight_area():
 	var direction = int(rad_to_deg(rotation_point.rotation)/90)%4
-	return attack_range[direction]
+	return attack_weight_area[direction]
 
 func place():
 	attack_collision.monitoring = true
@@ -41,11 +34,6 @@ func calculate_closest_target():
 				closest_target = x
 	return closest_target
 
-func _process(delta): #make it slowaly turn, not instant
-	if disabled:
-		position = (get_global_mouse_position()/32).floor()*32
-		return
-	attack_process(delta)
 
 func attack_process(delta):
 	if target and is_instance_valid(target):
@@ -72,5 +60,3 @@ func _on_attack_collision_body_entered(_body):
 func _on_attack_collision_body_exited(_body):
 	target = calculate_closest_target()
 
-func _on_attack_cooldown_timeout():
-	can_attack = true

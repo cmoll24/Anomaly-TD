@@ -6,6 +6,7 @@ extends Control
 @onready var magma_crab = load("res://src/enemy/MagmaCrab.tscn")
 @onready var turret = load("res://src/turret/Turret.tscn")
 @onready var laser = load("res://src/turret/Laser.tscn")
+@onready var emitter = load("res://src/turret/Emitter.tscn")
 @onready var terrain : TileMap = $Ysort/Terrain
 @onready var towers : TileMap = $Ysort/Towers32x32
 @onready var timer = $Timer
@@ -31,7 +32,7 @@ func _ready():
 	
 	grid_screen = Rect2i(-1,-1,int(screen_size.x/32)+2,int(screen_size.y/32)+2)
 	place_area = Rect2(Vector2(0,0),(grid_screen.size-Vector2i(2,2))*32)
-	print(grid_screen)
+	#print(grid_screen)
 
 	astargrid = AStarGrid2D.new()
 	astargrid.set_offset(Vector2(16,16))
@@ -50,7 +51,7 @@ func set_terrain():
 	astargrid.set_point_solid(enemy_path_start)
 	
 	astargrid.fill_weight_scale_region(astargrid.region, 0)
-	astargrid.fill_weight_scale_region(grid_screen, 10)#max(grid_screen.size.x,grid_screen.size.y)+20)
+	astargrid.fill_weight_scale_region(grid_screen, 20)#max(grid_screen.size.x,grid_screen.size.y)+20)
 	#print(terrain.get_used_rect())
 	#print(Rect2i(0,0,int(screen_size.x/16),int(screen_size.y/16)))
 	
@@ -75,14 +76,16 @@ func test_solid_point(loc : Vector2):
 		return false
 	return true
 
-func set_nav_weight(loc : Vector2, attack_range : Rect2i):
-	var pos = attack_range.position
-	var taille = attack_range.size
+func set_nav_weight(loc : Vector2, attack_weight : Callable, attack_area : Rect2i):
+	var pos = attack_area.position
+	var taille = attack_area.size
 	for i in range(pos.x, pos.x + taille.x):
 		for j in range(pos.y, pos.y + taille.y):
 			var new_loc = loc + Vector2(i,j)
 			if astargrid.is_in_bounds(new_loc.x, new_loc.y):
-				astargrid.set_point_weight_scale(new_loc, astargrid.get_point_weight_scale(new_loc) + 5)
+				var old_weight = astargrid.get_point_weight_scale(new_loc)
+				if old_weight != 1:
+					astargrid.set_point_weight_scale(new_loc, max(attack_weight.call(old_weight),0))
 
 func _draw():
 	'''
@@ -98,7 +101,7 @@ func _draw():
 		draw_rect(Rect2((mouse_pos/32).floor()*32,Vector2(32,32)),Color(1,0,0,0.5))
 	'''
 	#draw_rect(place_area,Color(0,0,1,0.5))
-	
+	'''
 	for i in range(grid_screen.size.x-2):
 		for j in range(grid_screen.size.y-2):
 			var cell_weight = astargrid.get_point_weight_scale(Vector2i(i,j))
@@ -106,7 +109,7 @@ func _draw():
 			Color(0,0,cell_weight/50,
 			cell_weight/50
 			))
-
+	'''
 
 func _process(_delta):
 	queue_redraw()
@@ -139,7 +142,7 @@ func place_turret(t, pos):
 		
 		if test_solid_point(grid_pos) == false:
 			return
-		set_nav_weight(grid_pos,t.get_attack_range())
+		set_nav_weight(grid_pos,t.get_attack_weight(),t.get_attack_weight_area())
 		t.set_position(grid_pos*Vector2(32,32))
 		t.place()
 		placing_turret = null
@@ -160,15 +163,17 @@ func _unhandled_input(event):
 	elif event.is_action_pressed("rotate") and placing_turret:
 		placing_turret.rotate_turret()
 
-
 func _on_turretbutton_pressed():
-	if placing_turret:
-		placing_turret.free()
-	placing_turret = turret.instantiate()
-	tower_tree.add_child(placing_turret)
+	load_tower(turret)
 
 func _on_laserbutton_pressed():
+	load_tower(laser)
+
+func _on_emitterbutton_pressed():
+	load_tower(emitter)
+
+func load_tower(tower):
 	if placing_turret:
 		placing_turret.free()
-	placing_turret = laser.instantiate()
+	placing_turret = tower.instantiate()
 	tower_tree.add_child(placing_turret)
