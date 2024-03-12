@@ -26,24 +26,26 @@ size = Vector2(6, 116)
 [node name="Laser" type="Node2D"]
 script = ExtResource("1_k6k8y")
 
-[node name="Placing_grid" type="ColorRect" parent="."]
+[node name="rotation_point" type="Node2D" parent="."]
+position = Vector2(16, 16)
+
+[node name="Placing_grid" type="ColorRect" parent="rotation_point"]
 z_index = 2
-offset_top = -96.0
-offset_right = 32.0
-offset_bottom = 32.0
+offset_left = -16.0
+offset_top = -112.0
+offset_right = 16.0
+offset_bottom = 16.0
 mouse_filter = 2
 color = Color(1, 0, 0, 0.470588)
 
-[node name="Base" type="Sprite2D" parent="."]
+[node name="Base" type="Sprite2D" parent="rotation_point"]
 z_index = -1
-position = Vector2(16, 16)
 texture = ExtResource("2_j85dk")
 
-[node name="rotation_point" type="Node2D" parent="."]
+[node name="gun_rotation" type="Node2D" parent="rotation_point"]
 z_index = 1
-position = Vector2(16, 16)
 
-[node name="attack" type="TextureRect" parent="rotation_point"]
+[node name="attack" type="TextureRect" parent="rotation_point/gun_rotation"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -56,16 +58,25 @@ rotation = 3.14159
 texture = ExtResource("3_5hy2r")
 expand_mode = 1
 stretch_mode = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="Gun" type="AnimatedSprite2D" parent="rotation_point"]
+[node name="Gun" type="AnimatedSprite2D" parent="rotation_point/gun_rotation"]
 sprite_frames = SubResource("SpriteFrames_0gv60")
 autoplay = "default"
 
-[node name="attack_range" type="Area2D" parent="."]
+[node name="attack_collision" type="Area2D" parent="rotation_point"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_range"]
-position = Vector2(15, -38)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rotation_point/attack_collision"]
+position = Vector2(-1, -54)
 shape = SubResource("RectangleShape2D_wvoy7")
 
-[connection signal="body_entered" from="attack_range" to="." method="_on_attack_range_body_entered"]
-[connection signal="body_exited" from="attack_range" to="." method="_on_attack_range_body_exited"]
+[node name="attack_cooldown" type="Timer" parent="."]
+wait_time = 4.0
+
+[node name="attacking_duration" type="Timer" parent="."]
+wait_time = 10.0
+
+[connection signal="body_entered" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_entered"]
+[connection signal="body_exited" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_exited"]
+[connection signal="timeout" from="attack_cooldown" to="." method="_on_attack_cooldown_timeout"]
+[connection signal="timeout" from="attacking_duration" to="." method="_on_attacking_duration_timeout"]

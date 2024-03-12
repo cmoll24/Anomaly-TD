@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://by8vnspp4d8vi"]
+[gd_scene load_steps=10 format=3 uid="uid://by8vnspp4d8vi"]
 
 [ext_resource type="Script" path="res://src/turret/Turret.gd" id="1_yj4np"]
 [ext_resource type="Texture2D" uid="uid://dhmgwdt7je8hi" path="res://assets/turrets/small_base.png" id="2_73tdw"]
@@ -47,51 +47,44 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_5plb2"]
 radius = 48.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h6jt4"]
-size = Vector2(32, 32)
-
 [node name="Turret" type="Node2D"]
 script = ExtResource("1_yj4np")
 
-[node name="Placing_grid" type="ColorRect" parent="."]
+[node name="rotation_point" type="Node2D" parent="."]
+position = Vector2(16, 16)
+
+[node name="Placing_grid" type="ColorRect" parent="rotation_point"]
 z_index = 2
-offset_right = 32.0
-offset_bottom = 32.0
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
 mouse_filter = 2
 color = Color(1, 0, 0, 0.470588)
 
-[node name="Base" type="Sprite2D" parent="."]
-position = Vector2(16, 16)
+[node name="Base" type="Sprite2D" parent="rotation_point"]
 texture = ExtResource("2_73tdw")
 
-[node name="rotation_point" type="Node2D" parent="."]
+[node name="gun_rotation" type="Node2D" parent="rotation_point"]
 z_index = 1
-position = Vector2(16, 16)
 
-[node name="attack" type="Sprite2D" parent="rotation_point"]
+[node name="attack" type="Sprite2D" parent="rotation_point/gun_rotation"]
 visible = false
 position = Vector2(-0.5, -15)
 scale = Vector2(0.0546875, 0.328125)
 texture = ExtResource("3_s15au")
 
-[node name="Gun" type="AnimatedSprite2D" parent="rotation_point"]
+[node name="Gun" type="AnimatedSprite2D" parent="rotation_point/gun_rotation"]
 sprite_frames = SubResource("SpriteFrames_u447r")
 autoplay = "default"
 
-[node name="attack_range" type="Area2D" parent="."]
+[node name="attack_collision" type="Area2D" parent="rotation_point"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_range"]
-position = Vector2(16, 16)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rotation_point/attack_collision"]
 shape = SubResource("CircleShape2D_5plb2")
 
-[node name="Hitbox" type="StaticBody2D" parent="."]
-visible = false
-collision_layer = 0
-collision_mask = 0
+[node name="attack_cooldown" type="Timer" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(16, 16)
-shape = SubResource("RectangleShape2D_h6jt4")
-
-[connection signal="body_entered" from="attack_range" to="." method="_on_attack_range_body_entered"]
-[connection signal="body_exited" from="attack_range" to="." method="_on_attack_range_body_exited"]
+[connection signal="body_entered" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_entered"]
+[connection signal="body_exited" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_exited"]
+[connection signal="timeout" from="attack_cooldown" to="." method="_on_attack_cooldown_timeout"]

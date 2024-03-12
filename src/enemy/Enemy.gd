@@ -13,6 +13,8 @@ var screen_size : Vector2
 var navigating = false
 var nav_agent : AStarGrid2D
 
+var health = 100
+
 func _ready():
 	screen_size = GlobalVariables.get_screen_size()
 	target = get_nearest_edge()
@@ -67,6 +69,11 @@ func get_next_position():
 			#print('n',nav_agent.get_point_weight_scale(path[0]/32))
 			path.remove_at(0)
 		return path[0]
+
+func damage(d):
+	health -= d
+	if health < 0:
+		queue_free()
 
 func _physics_process(_delta):
 	velocity.x = 0
