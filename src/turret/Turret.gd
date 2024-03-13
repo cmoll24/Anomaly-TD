@@ -6,10 +6,11 @@ class_name Turret
 @onready var attack_collision = $rotation_point/attack_collision
 @onready var attack = $rotation_point/gun_rotation/attack
 @onready var attack_cooldown = $attack_cooldown
+@onready var gun_anim = $rotation_point/gun_rotation/Gun
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	placing_grid.visible = true
+	range_indicator.visible = true
 	attack_weight_area = [Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3)]
 	attack_collision.monitoring = false
 	attack.visible = false
@@ -20,8 +21,9 @@ func get_attack_weight_area():
 
 func place():
 	attack_collision.monitoring = true
-	placing_grid.visible = false
+	range_indicator.visible = false
 	disabled = false
+	range_indicator.z_index = -1
 
 func calculate_closest_target():
 	var closest_target = null
@@ -37,14 +39,15 @@ func calculate_closest_target():
 
 func attack_process(delta):
 	if target and is_instance_valid(target):
-		var target_direction = (get_global_position()+offset).angle_to_point(target.global_position) + deg_to_rad(90) - rotation_point.rotation
+		var target_direction = (get_global_position()+offset).angle_to_point(target.global_position+Vector2(8,8)) + deg_to_rad(90) - rotation_point.rotation
 		gun_rotation.rotation = lerp_angle(gun_rotation.rotation, target_direction, 5*delta)
 		
 		#print(abs(angle_difference(rotation_point.rotation,target_direction)))
 		if can_attack and abs(angle_difference(gun_rotation.rotation,target_direction)) < 0.2:
-			attack.visible = true
+			#attack.visible = true
 			target.damage(3)
 			attack_cooldown.start()
+			gun_anim.play("attack1")
 			can_attack = false
 		else:
 			attack.visible = false

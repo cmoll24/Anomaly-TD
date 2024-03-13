@@ -2,14 +2,10 @@ extends Control
 
 @onready var unit_tree : Node2D = $Ysort/creatures
 @onready var tower_tree : Node2D = $Ysort/towers
-@onready var scorpion = load("res://src/enemy/Enemy.tscn")
-@onready var magma_crab = load("res://src/enemy/MagmaCrab.tscn")
 @onready var turret = load("res://src/turret/Turret.tscn")
 @onready var laser = load("res://src/turret/Laser.tscn")
 @onready var emitter = load("res://src/turret/Emitter.tscn")
 @onready var terrain : TileMap = $Ysort/Terrain
-@onready var towers : TileMap = $Ysort/Towers32x32
-@onready var timer = $Timer
 
 @onready var academy = $Academy
 
@@ -17,13 +13,13 @@ var screen_size : Vector2
 var grid_screen : Rect2i #visible grid area
 var place_area : Rect2 #area where you can place turrets
 var astargrid : AStarGrid2D
+var pheromones_grid : Array[Vector2]
 
 var enemy_path_start : Vector2
 var enemy_path_end : Vector2
 
 var placing_turret
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	enemy_path_start = Vector2(academy.position/32)
 	enemy_path_end = Vector2(-2,-2)
@@ -44,8 +40,8 @@ func _ready():
 	astargrid.update()
 	set_terrain()
 	
-	spawn_unit(enemy_path_start*32)
-	timer.start()
+	#spawn_unit(enemy_path_start*32)
+	#timer.start()
 
 func set_terrain():
 	astargrid.set_point_solid(enemy_path_start)
@@ -84,8 +80,10 @@ func set_nav_weight(loc : Vector2, attack_weight : Callable, attack_area : Rect2
 			var new_loc = loc + Vector2(i,j)
 			if astargrid.is_in_bounds(new_loc.x, new_loc.y):
 				var old_weight = astargrid.get_point_weight_scale(new_loc)
-				if old_weight != 1:
-					astargrid.set_point_weight_scale(new_loc, max(attack_weight.call(old_weight),0))
+				#print(pheromones_grid)
+				if new_loc not in pheromones_grid:
+					var new_weight = max(attack_weight.call(old_weight, new_loc, pheromones_grid),0)
+					astargrid.set_point_weight_scale(new_loc, new_weight)
 
 func _draw():
 	'''
@@ -106,10 +104,11 @@ func _draw():
 		for j in range(grid_screen.size.y-2):
 			var cell_weight = astargrid.get_point_weight_scale(Vector2i(i,j))
 			draw_rect(Rect2(Vector2(i,j)*32,Vector2(32,32)),
-			Color(0,0,cell_weight/50,
+			Color(0,0,1,
 			cell_weight/50
 			))
 	'''
+	
 
 func _process(_delta):
 	queue_redraw()
@@ -118,16 +117,15 @@ func _process(_delta):
 #	return Vector2(randi_range(1,screen_size.x),
 #				   randi_range(1,screen_size.y))
 
-func _on_timer_timeout():
-	spawn_unit(enemy_path_start*32)#get_random_loc())#Vector2(screen_size.x/2,screen_size.y/2))
-	timer.start()
+#func _on_timer_timeout():
+#	spawn_unit(enemy_path_start*32)#get_random_loc())#Vector2(screen_size.x/2,screen_size.y/2))
+#	var new_time = 5#lerp(timer.wait_time,1.0,0.01)
+#	#print(new_time)
+#	timer.start(new_time)
 
-func spawn_unit(pos):
+func spawn_unit(enemy_type, pos):
 	var enemy
-	if randi_range(0,3) == 0:
-		enemy = magma_crab.instantiate()
-	else:
-		enemy = scorpion.instantiate()
+	enemy = enemy_type.instantiate()
 	enemy.set_position(pos.snapped(Vector2(GlobalVariables.GRID_CELL_SIZE)) + Vector2(16,16))
 	unit_tree.add_child(enemy)
 	#print(create_navpath(enemy.position,enemy.target))
@@ -160,6 +158,7 @@ func _unhandled_input(event):
 		var mouse_pos = get_global_mouse_position()
 		if place_area.has_point(mouse_pos):
 			place_turret(placing_turret, mouse_pos)
+			get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("rotate") and placing_turret:
 		placing_turret.rotate_turret()
 
@@ -177,3 +176,6 @@ func load_tower(tower):
 		placing_turret.free()
 	placing_turret = tower.instantiate()
 	tower_tree.add_child(placing_turret)
+
+func _on_enemy_waves_spawn_wave(enemy_type):
+	spawn_unit(enemy_type, enemy_path_start*32)

@@ -1,13 +1,48 @@
-[gd_scene load_steps=10 format=3 uid="uid://by8vnspp4d8vi"]
+[gd_scene load_steps=22 format=3 uid="uid://by8vnspp4d8vi"]
 
 [ext_resource type="Script" path="res://src/turret/Turret.gd" id="1_yj4np"]
+[ext_resource type="Texture2D" uid="uid://du3r2mchs5yhd" path="res://assets/ui/circle.png" id="2_5lamd"]
 [ext_resource type="Texture2D" uid="uid://dhmgwdt7je8hi" path="res://assets/turrets/small_base.png" id="2_73tdw"]
+[ext_resource type="Texture2D" uid="uid://cl017bpohoa73" path="res://assets/turrets/muzzle-flare.png" id="3_4km3g"]
 [ext_resource type="Texture2D" uid="uid://ddoraqpy25syy" path="res://assets/turrets/weapons32x32.png" id="3_n0fwn"]
-[ext_resource type="Texture2D" uid="uid://bhob7aleg1sin" path="res://icon.svg" id="3_s15au"]
+[ext_resource type="Texture2D" uid="uid://be24fis5lxbqv" path="res://assets/turrets/turret_01_65x46.png" id="4_4miko"]
+[ext_resource type="Texture2D" uid="uid://210am8dlu3ur" path="res://assets/turrets/turret_01_48x48.png" id="4_48sev"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hwy61"]
-atlas = ExtResource("3_n0fwn")
-region = Rect2(0, 0, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_30ets"]
+atlas = ExtResource("4_4miko")
+region = Rect2(0, 0, 46, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uw640"]
+atlas = ExtResource("4_4miko")
+region = Rect2(46, 0, 46, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aaj54"]
+atlas = ExtResource("4_4miko")
+region = Rect2(92, 0, 46, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4tbvd"]
+atlas = ExtResource("4_4miko")
+region = Rect2(138, 0, 46, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ojid"]
+atlas = ExtResource("4_4miko")
+region = Rect2(184, 0, 46, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wcrb"]
+atlas = ExtResource("4_4miko")
+region = Rect2(230, 0, 46, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3yvo"]
+atlas = ExtResource("4_4miko")
+region = Rect2(276, 0, 46, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fhuul"]
+atlas = ExtResource("4_4miko")
+region = Rect2(322, 0, 46, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_urphv"]
+atlas = ExtResource("4_48sev")
+region = Rect2(0, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sxr8o"]
 atlas = ExtResource("3_n0fwn")
@@ -21,7 +56,41 @@ region = Rect2(32, 32, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_hwy61")
+"texture": SubResource("AtlasTexture_30ets")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uw640")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aaj54")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4tbvd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ojid")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0wcrb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i3yvo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fhuul")
+}],
+"loop": false,
+"name": &"attack1",
+"speed": 15.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"attack2",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_urphv")
 }],
 "loop": true,
 "name": &"default",
@@ -47,21 +116,21 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_5plb2"]
 radius = 48.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qo7gc"]
+size = Vector2(32, 32)
+
 [node name="Turret" type="Node2D"]
 script = ExtResource("1_yj4np")
 
 [node name="rotation_point" type="Node2D" parent="."]
 position = Vector2(16, 16)
 
-[node name="Placing_grid" type="ColorRect" parent="rotation_point"]
+[node name="Range_indicator" type="Sprite2D" parent="rotation_point"]
+self_modulate = Color(1, 0.992157, 0, 0.392157)
 z_index = 2
-offset_left = -48.0
-offset_top = -48.0
-offset_right = 48.0
-offset_bottom = 48.0
-mouse_filter = 2
-color = Color(1, 0, 0, 0.470588)
-metadata/_edit_use_anchors_ = true
+position = Vector2(4.76837e-07, -4.76837e-07)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_5lamd")
 
 [node name="Base" type="Sprite2D" parent="rotation_point"]
 texture = ExtResource("2_73tdw")
@@ -71,21 +140,29 @@ z_index = 1
 
 [node name="attack" type="Sprite2D" parent="rotation_point/gun_rotation"]
 visible = false
-position = Vector2(-0.5, -15)
-scale = Vector2(0.0546875, 0.328125)
-texture = ExtResource("3_s15au")
+position = Vector2(-1, -28)
+texture = ExtResource("3_4km3g")
 
 [node name="Gun" type="AnimatedSprite2D" parent="rotation_point/gun_rotation"]
 sprite_frames = SubResource("SpriteFrames_u447r")
+animation = &"attack1"
 autoplay = "default"
+frame = 7
+frame_progress = 1.0
 
 [node name="attack_collision" type="Area2D" parent="rotation_point"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="rotation_point/attack_collision"]
 shape = SubResource("CircleShape2D_5plb2")
 
+[node name="Click_area" type="Area2D" parent="rotation_point"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rotation_point/Click_area"]
+shape = SubResource("RectangleShape2D_qo7gc")
+
 [node name="attack_cooldown" type="Timer" parent="."]
 
 [connection signal="body_entered" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_entered"]
 [connection signal="body_exited" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_exited"]
+[connection signal="input_event" from="rotation_point/Click_area" to="." method="_on_click_area_input_event"]
 [connection signal="timeout" from="attack_cooldown" to="." method="_on_attack_cooldown_timeout"]

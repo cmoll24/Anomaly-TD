@@ -16,3 +16,4 @@ offset = Vector2(16, 16)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(16, 16)
 shape = SubResource("RectangleShape2D_dw8dh")
+disabled = true

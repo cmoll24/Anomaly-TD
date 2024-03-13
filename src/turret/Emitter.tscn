@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgpgx3has3nm"]
+[gd_scene load_steps=6 format=3 uid="uid://bgpgx3has3nm"]
 
 [ext_resource type="Script" path="res://src/turret/Emitter.gd" id="1_msngs"]
-[ext_resource type="Texture2D" uid="uid://dhmgwdt7je8hi" path="res://assets/turrets/small_base.png" id="2_63857"]
+[ext_resource type="Texture2D" uid="uid://becm4xur57mln" path="res://assets/turrets/emitter_tower.png" id="2_8aawt"]
+
+[sub_resource type="Gradient" id="Gradient_ifel2"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3v4qj"]
+gradient = SubResource("Gradient_ifel2")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jcvwk"]
+size = Vector2(32, 32)
 
 [node name="Emitter" type="Node2D"]
 script = ExtResource("1_msngs")
@@ -9,18 +19,8 @@ script = ExtResource("1_msngs")
 [node name="rotation_point" type="Node2D" parent="."]
 position = Vector2(16, 16)
 
-[node name="Placing_grid" type="ColorRect" parent="rotation_point"]
-z_index = 2
-offset_left = -48.0
-offset_top = -48.0
-offset_right = 48.0
-offset_bottom = 48.0
-mouse_filter = 2
-color = Color(1, 0, 0, 0.470588)
-metadata/_edit_use_anchors_ = true
-
 [node name="Effect" type="ColorRect" parent="rotation_point"]
-z_index = -1
+z_index = -2
 offset_left = -48.0
 offset_top = -48.0
 offset_right = 48.0
@@ -29,5 +29,19 @@ mouse_filter = 2
 color = Color(0.286275, 0.498039, 1, 0.313726)
 metadata/_edit_use_anchors_ = true
 
+[node name="Range_indicator" type="Sprite2D" parent="rotation_point"]
+self_modulate = Color(1, 0.992157, 0, 0.392157)
+z_index = 2
+position = Vector2(-3.8147e-06, 0)
+scale = Vector2(1.5, 1.5)
+texture = SubResource("GradientTexture2D_3v4qj")
+
 [node name="Base" type="Sprite2D" parent="rotation_point"]
-texture = ExtResource("2_63857")
+texture = ExtResource("2_8aawt")
+
+[node name="Click_area" type="Area2D" parent="rotation_point"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rotation_point/Click_area"]
+shape = SubResource("RectangleShape2D_jcvwk")
+
+[connection signal="input_event" from="rotation_point/Click_area" to="." method="_on_click_area_input_event"]
