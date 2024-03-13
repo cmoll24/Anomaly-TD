@@ -10,6 +10,7 @@ class_name Turret
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	gbv_name = GlobalVariables.TOWERS.TURRET
 	range_indicator.visible = true
 	attack_weight_area = [Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3)]
 	attack_collision.monitoring = false

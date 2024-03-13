@@ -553,6 +553,13 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_vskkh")
 
+[node name="Coins" type="Label" parent="."]
+layout_mode = 0
+offset_right = 57.0
+offset_bottom = 23.0
+scale = Vector2(0.9, 0.9)
+text = "Coins:"
+
 [node name="UI" type="Control" parent="."]
 z_index = 4
 layout_mode = 1

@@ -2,10 +2,13 @@ extends Control
 
 @onready var unit_tree : Node2D = $Ysort/creatures
 @onready var tower_tree : Node2D = $Ysort/towers
-@onready var turret = load("res://src/turret/Turret.tscn")
-@onready var laser = load("res://src/turret/Laser.tscn")
-@onready var emitter = load("res://src/turret/Emitter.tscn")
 @onready var terrain : TileMap = $Ysort/Terrain
+
+@onready var turret_button = $"UI/turret-button"
+@onready var emitter_button = $"UI/emitter-button"
+@onready var laser_button = $"UI/laser-button"
+
+@onready var coins_label = $Coins
 
 @onready var academy = $Academy
 
@@ -39,6 +42,8 @@ func _ready():
 	
 	astargrid.update()
 	set_terrain()
+	
+	GlobalVariables.set_coins(50)
 	
 	#spawn_unit(enemy_path_start*32)
 	#timer.start()
@@ -109,8 +114,18 @@ func _draw():
 			))
 	'''
 	
+func set_color_coins(button, coins, tower_type):
+	if coins >= GlobalVariables.stats[tower_type]['cost']:
+		button.self_modulate = Color(1,1,1,1)
+	else:
+		button.self_modulate = Color(1,0,0,0.5)
 
 func _process(_delta):
+	var coins = GlobalVariables.get_coins()
+	coins_label.text = 'Coins: ' + str(coins)
+	set_color_coins(turret_button, coins, GlobalVariables.TOWERS.TURRET)
+	set_color_coins(laser_button, coins, GlobalVariables.TOWERS.LASER)
+	set_color_coins(emitter_button, coins, GlobalVariables.TOWERS.EMITTER)
 	queue_redraw()
 
 #func get_random_loc():
@@ -143,6 +158,7 @@ func place_turret(t, pos):
 		set_nav_weight(grid_pos,t.get_attack_weight(),t.get_attack_weight_area())
 		t.set_position(grid_pos*Vector2(32,32))
 		t.place()
+		GlobalVariables.change_coins(-t.get_cost())
 		placing_turret = null
 		#towers.set_cells_terrain_connect(0, [grid_pos2i], 0, 0)
 	
@@ -163,19 +179,20 @@ func _unhandled_input(event):
 		placing_turret.rotate_turret()
 
 func _on_turretbutton_pressed():
-	load_tower(turret)
+	load_tower(GlobalVariables.TOWERS.TURRET)
 
 func _on_laserbutton_pressed():
-	load_tower(laser)
+	load_tower(GlobalVariables.TOWERS.LASER)
 
 func _on_emitterbutton_pressed():
-	load_tower(emitter)
+	load_tower(GlobalVariables.TOWERS.EMITTER)
 
 func load_tower(tower):
-	if placing_turret:
+	if placing_turret and is_instance_valid(placing_turret):
 		placing_turret.free()
-	placing_turret = tower.instantiate()
-	tower_tree.add_child(placing_turret)
+	if GlobalVariables.get_coins() >= GlobalVariables.stats[tower]['cost']:
+		placing_turret = load(GlobalVariables.stats[tower]['path']).instantiate()
+		tower_tree.add_child(placing_turret)
 
 func _on_enemy_waves_spawn_wave(enemy_type):
 	spawn_unit(enemy_type, enemy_path_start*32)

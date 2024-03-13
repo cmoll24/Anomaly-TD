@@ -46,15 +46,10 @@ func _ready():
 	
 	timer.start(15)
 
-func get_next_wave():
-	var next_wave = waves.pop_front()
-	return next_wave if next_wave != null else [scorpion,1]
-
-
 func _on_timer_timeout():
 	var next_wave = waves.pop_front()
 	if next_wave == null:
-		next_wave = [scorpion,3]
+		next_wave = [magma_crab,0.5]
 	var enemy_type = next_wave[0]
 	emit_signal("spawn_wave",enemy_type)
 	timer.start(next_wave[1])

@@ -18,6 +18,8 @@ var nav_agent : AStarGrid2D
 var health = 100
 var death_deterent = 1
 
+var coin_bonus : int
+
 func _ready():
 	screen_size = GlobalVariables.get_screen_size()
 	target = get_nearest_edge()
@@ -83,6 +85,7 @@ func damage(d):
 		nav_agent.set_point_weight_scale(death_pos, 
 					nav_agent.get_point_weight_scale(death_pos) + death_deterent
 					)
+		GlobalVariables.change_coins(coin_bonus)
 		queue_free()
 
 func update_health_bar():

@@ -9,9 +9,32 @@ var aspect_ratio = Vector2i(16,9)
 var viewport_size : Vector2
 var GRID_CELL_SIZE = Vector2i(32,32)
 
+var coins :int = 0
+
+enum TOWERS {
+	TURRET,
+	EMITTER,
+	LASER
+}
+
+var stats = {
+	TOWERS.TURRET : {'path' : "res://src/turret/Turret.tscn", 'cost' : 15},
+	TOWERS.EMITTER : {'path' : "res://src/turret/Emitter.tscn", 'cost' : 10},
+	TOWERS.LASER : {'path' : "res://src/turret/Laser.tscn", 'cost' : 30},
+}
+
 func _ready():
 	viewport_size = get_viewport().get_visible_rect().size
 	rescale_window()
+
+func set_coins(init_val):
+	coins = init_val
+
+func change_coins(val):
+	coins = max(coins+val,0)
+	
+func get_coins():
+	return coins
 
 func get_screen_size() -> Vector2:
 	return viewport_size

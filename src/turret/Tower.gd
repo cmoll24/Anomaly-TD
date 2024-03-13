@@ -12,6 +12,8 @@ var offset = Vector2(24,24)
 
 var can_attack = true
 
+var gbv_name : GlobalVariables.TOWERS
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	range_indicator.visible = true
@@ -21,6 +23,9 @@ func get_attack_weight_area():
 
 func get_attack_weight():
 	return attack_weight_transform
+
+func get_cost():
+	return GlobalVariables.stats[gbv_name]['cost']
 
 func place():
 	range_indicator.visible = false
