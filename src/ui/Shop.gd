@@ -21,7 +21,7 @@ func _on_done_pressed():
 func update_waves():
 	var txt = ''
 	for enemy_type in range(len(enemy_spawner.waves)):
-		txt += GlobalVariables.enemy_stats[enemy_type]['name'] + ' ' + str(enemy_spawner.waves[enemy_type]) + ','
+		txt += GlobalVariables.enemy_stats[enemy_type]['name'] + ' ' + str(enemy_spawner.waves[enemy_type]) + ', '
 		#txt += GlobalVariables.enemy_stats[item[0]]['name'] + ', '
 	waves_txt.text = txt
 	
@@ -29,9 +29,11 @@ func update_waves():
 #Eggs
 
 func add_enemy(enemy_type):
-	GlobalVariables.change_coins(-GlobalVariables.enemy_stats[enemy_type]['cost'])
-	enemy_spawner.add_wave(enemy_type)
-	update_waves()
+	var cost = GlobalVariables.enemy_stats[enemy_type]['cost']
+	if GlobalVariables.get_coins() >= cost:
+		GlobalVariables.change_coins(-cost)
+		enemy_spawner.add_wave(enemy_type)
+		update_waves()
 
 func _on_larva_pressed():
 	add_enemy(GlobalVariables.ENEMIES.LARVA)

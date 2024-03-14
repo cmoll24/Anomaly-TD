@@ -41,7 +41,7 @@ mouse_filter = 2
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 35
-text = "Shop"
+text = "Lab"
 horizontal_alignment = 1
 
 [node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
@@ -85,17 +85,15 @@ size_flags_vertical = 0
 text = "Beetle (50)"
 icon = ExtResource("5_nw24p")
 
-[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_stretch_ratio = 0.0
-
 [node name="Upgrade_label" type="Label" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Upgrade Turrets"
 horizontal_alignment = 1
 
 [node name="Upgrade" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 alignment = 1
 
