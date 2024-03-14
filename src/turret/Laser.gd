@@ -3,11 +3,12 @@ extends Turret
 @onready var attacking_duration = $attacking_duration
 
 func _ready():
-	gbv_name = GlobalVariables.TOWERS.LASER
+	tower_type = GlobalVariables.TOWERS.LASER
 	attack_weight_area = [Rect2i(0,-3,1,4),Rect2i(0,0,4,1),Rect2i(0,0,1,4),Rect2i(-3,0,4,1)]
 	attack_collision.monitoring = false
 	attack.visible = false
 	range_indicator.visible = true
+	side_panel.open(tower_type)
 
 func attack_process(delta):
 	if can_attack and target and is_instance_valid(target):

@@ -20,9 +20,12 @@ enum TOWERS {
 }
 
 var stats = {
-	TOWERS.TURRET : {'path' : "res://src/turret/Turret.tscn", 'cost' : 15},
-	TOWERS.EMITTER : {'path' : "res://src/turret/Emitter.tscn", 'cost' : 10},
-	TOWERS.LASER : {'path' : "res://src/turret/Laser.tscn", 'cost' : 30},
+	TOWERS.TURRET : {'path' : "res://src/turret/Turret.tscn", 'cost' : 15, 'name' : 'Turret', 
+	'description' : "Basic turret shoots one at enemy at a time.\n\nDeals 3 damage and fires 6 times per second"},
+	TOWERS.EMITTER : {'path' : "res://src/turret/Emitter.tscn", 'cost' : 10, 'name' : 'Emitter',
+	'description' : "Pheromone emitter attracts enemies towards it's area."},
+	TOWERS.LASER : {'path' : "res://src/turret/Laser.tscn", 'cost' : 30, 'name' : 'Laser',
+	'description' : "Powerful laser that deals damage over time in a straight line to one target.\n\nDeals 150 damage over 10s and cools down for 30s"},
 }
 
 func _ready():

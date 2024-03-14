@@ -6,6 +6,7 @@ func add_weight(_x, loc, pheromones_grid):
 
 func _ready():
 	#attack_weight_area = [Rect2i(-2,-2,5,5),Rect2i(-2,-1,5,5),Rect2i(-2,-2,5,5),Rect2i(-2,-2,5,5)]
-	gbv_name = GlobalVariables.TOWERS.EMITTER
+	tower_type = GlobalVariables.TOWERS.EMITTER
 	attack_weight_transform = add_weight
 	range_indicator.visible = true
+	side_panel.open(tower_type)

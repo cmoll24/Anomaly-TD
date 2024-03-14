@@ -1,17 +1,20 @@
 extends Control
 
-@onready var unit_tree : Node2D = $Ysort/creatures
-@onready var tower_tree : Node2D = $Ysort/towers
-@onready var terrain : TileMap = $Ysort/Terrain
+@onready var unit_tree : Node2D = $pausable/Ysort/creatures
+@onready var tower_tree : Node2D = $pausable/Ysort/towers
+@onready var terrain : TileMap = $pausable/Ysort/Terrain
 
-@onready var turret_button = $"UI/turret-button"
-@onready var emitter_button = $"UI/emitter-button"
-@onready var laser_button = $"UI/laser-button"
+@onready var turret_button = $"pausable/UI/turret-button"
+@onready var emitter_button = $"pausable/UI/emitter-button"
+@onready var laser_button = $"pausable/UI/laser-button"
 
 @onready var coins_label = $Coins
 @onready var health_label = $"Player health"
+@onready var academy = $pausable/Academy
 
-@onready var academy = $Academy
+@onready var pause_tree = $pausable
+@onready var pause_menu = $Overlay/PauseMenu
+@onready var side_panel = $pausable/UI/SidePanel
 
 var screen_size : Vector2
 var grid_screen : Rect2i #visible grid area
@@ -194,7 +197,10 @@ func load_tower(tower):
 		placing_turret.free()
 	if GlobalVariables.get_coins() >= GlobalVariables.stats[tower]['cost']:
 		placing_turret = load(GlobalVariables.stats[tower]['path']).instantiate()
+		placing_turret.side_panel = side_panel
 		tower_tree.add_child(placing_turret)
 
 func _on_enemy_waves_spawn_wave(enemy_type):
 	spawn_unit(enemy_type, enemy_path_start*32)
+
+

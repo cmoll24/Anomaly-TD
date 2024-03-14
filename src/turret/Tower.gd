@@ -12,11 +12,14 @@ var offset = Vector2(24,24)
 
 var can_attack = true
 
-var gbv_name : GlobalVariables.TOWERS
+var tower_type : GlobalVariables.TOWERS
+
+var side_panel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	range_indicator.visible = true
+	side_panel.open(tower_type)
 
 func get_attack_weight_area():
 	return attack_weight_area[0]
@@ -25,12 +28,13 @@ func get_attack_weight():
 	return attack_weight_transform
 
 func get_cost():
-	return GlobalVariables.stats[gbv_name]['cost']
+	return GlobalVariables.stats[tower_type]['cost']
 
 func place():
 	range_indicator.visible = false
 	range_indicator.z_index = -1
 	disabled = false
+	side_panel.close()
 
 func _process(delta): #make it slowaly turn, not instant
 	if disabled:
@@ -56,7 +60,9 @@ func _on_attack_cooldown_timeout():
 func _on_click_area_input_event(_viewport, event, _shape_idx):
 	if not disabled and event.is_action_pressed("select"):
 		range_indicator.visible = true
+		side_panel.open(tower_type)
 
 func _input(event):
 	if not disabled and event.is_action_pressed("select"):
 		range_indicator.visible = false
+		side_panel.close()
