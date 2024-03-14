@@ -1,9 +1,9 @@
 # Anomaly-TD
-Credits:
-  Art:
-    Tower assets: https://zintoki.itch.io/ground-shaker
-    ​Enemy assets: https://foozlecc.itch.io/spire-enemy-pack-2
-    Background tileset: https://opengameart.org/content/tiny-town​​
-  Code by me
-  Created using Godot Game Engine
+Credits:\n
+  Art:\n
+    Tower assets: https://zintoki.itch.io/ground-shaker\n
+    ​Enemy assets: https://foozlecc.itch.io/spire-enemy-pack-2\n
+    Background tileset: https://opengameart.org/content/tiny-town​​\n
+  Code by me\n
+  Created using Godot Game Engine\n
   Sound effects created with https://sfbgames.itch.io/chiptone
