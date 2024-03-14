@@ -548,7 +548,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Level1" type="Control"]
+[node name="Level2" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -557,21 +557,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_okiwm")
-
-[node name="Player health" type="Label" parent="."]
-layout_mode = 0
-offset_right = 57.0
-offset_bottom = 23.0
-scale = Vector2(0.9, 0.9)
-text = "Health:"
-
-[node name="Next_wave" type="Label" parent="."]
-layout_mode = 0
-offset_left = 328.0
-offset_right = 449.0
-offset_bottom = 23.0
-scale = Vector2(0.9, 0.9)
-text = "Next wave in xs"
 
 [node name="Overlay" type="Control" parent="."]
 z_index = 5
@@ -582,6 +567,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+
+[node name="Player_health" type="Label" parent="Overlay"]
+layout_mode = 0
+offset_right = 57.0
+offset_bottom = 23.0
+scale = Vector2(0.9, 0.9)
+text = "Health:"
+
+[node name="Next_wave" type="Label" parent="Overlay"]
+layout_mode = 0
+offset_left = 328.0
+offset_right = 449.0
+offset_bottom = 23.0
+scale = Vector2(0.9, 0.9)
+text = "Next wave in xs"
 
 [node name="Shop" parent="Overlay" node_paths=PackedStringArray("enemy_spawner") instance=ExtResource("2_lcohf")]
 visible = false
@@ -595,6 +595,14 @@ offset_right = 57.0
 offset_bottom = 40.0
 scale = Vector2(0.9, 0.9)
 text = "Coins:"
+
+[node name="Score" type="Label" parent="Overlay"]
+layout_mode = 0
+offset_top = 33.0
+offset_right = 57.0
+offset_bottom = 56.0
+scale = Vector2(0.9, 0.9)
+text = "Score:"
 
 [node name="PauseMenu" parent="Overlay" node_paths=PackedStringArray("pause_tree") instance=ExtResource("3_sqge3")]
 visible = false
@@ -683,6 +691,14 @@ text = "(left click) to place tower
 (r) to rotate tower
 (right click) to clear selection"
 
+[node name="start_wave" type="Button" parent="pausable/UI"]
+layout_mode = 0
+offset_left = 635.0
+offset_top = -391.0
+offset_right = 766.0
+offset_bottom = -360.0
+text = "Start next Wave"
+
 [node name="Ysort" type="Node2D" parent="pausable"]
 y_sort_enabled = true
 
@@ -736,5 +752,7 @@ bus = &"sfx"
 [connection signal="pressed" from="pausable/UI/turret-button" to="." method="_on_turretbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/laser-button" to="." method="_on_laserbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/emitter-button" to="." method="_on_emitterbutton_pressed"]
+[connection signal="pressed" from="pausable/UI/start_wave" to="." method="_on_start_wave_pressed"]
 [connection signal="spawn_wave" from="pausable/EnemyWaves" to="." method="_on_enemy_waves_spawn_wave"]
 [connection signal="waves_over" from="pausable/EnemyWaves" to="." method="_on_enemy_waves_waves_over"]
+[connection signal="finished" from="lose_audio" to="." method="_on_lose_audio_finished"]
