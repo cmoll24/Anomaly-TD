@@ -1,10 +1,12 @@
-[gd_scene load_steps=26 format=3 uid="uid://m2ue1gvxs63p"]
+[gd_scene load_steps=28 format=3 uid="uid://m2ue1gvxs63p"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_vskkh"]
 [ext_resource type="Texture2D" uid="uid://dcse3qyvm7yx5" path="res://assets/turrets/turret-icon.png" id="2_ku564"]
+[ext_resource type="PackedScene" uid="uid://d4cpl220fkdrl" path="res://src/ui/SidePanel.tscn" id="3_0gmds"]
 [ext_resource type="Texture2D" uid="uid://dwt2v4an416yh" path="res://assets/turrets/laser-icon.png" id="3_0uep1"]
 [ext_resource type="Texture2D" uid="uid://bndu4ko7er5eo" path="res://assets/tileset/16bit-tilset/tilemap_packed.png" id="3_c8jye"]
 [ext_resource type="Texture2D" uid="uid://becm4xur57mln" path="res://assets/turrets/emitter_tower.png" id="4_65qyf"]
+[ext_resource type="PackedScene" uid="uid://csfyhc8jt8ksq" path="res://src/ui/PauseMenu.tscn" id="5_clpq2"]
 [ext_resource type="Texture2D" uid="uid://cgx7helht35d2" path="res://assets/turrets/turret_01_mk2-64x64.png" id="6_2sqn4"]
 [ext_resource type="Texture2D" uid="uid://kng106ig0jso" path="res://assets/turrets/weapons48x48.png" id="7_gcygi"]
 [ext_resource type="PackedScene" uid="uid://dhodcrhes1jot" path="res://src/turret/Academy.tscn" id="7_k3toq"]
@@ -560,19 +562,50 @@ offset_bottom = 23.0
 scale = Vector2(0.9, 0.9)
 text = "Coins:"
 
-[node name="UI" type="Control" parent="."]
+[node name="Overlay" type="Control" parent="."]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="PauseMenu" parent="Overlay" node_paths=PackedStringArray("pause_tree") instance=ExtResource("5_clpq2")]
+layout_mode = 1
+pause_tree = NodePath("../../pausable")
+
+[node name="pausable" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="UI" type="Control" parent="pausable"]
 z_index = 4
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -38.0
-offset_bottom = 2.0
+offset_top = 354.0
+offset_bottom = 394.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="ColorRect" type="ColorRect" parent="UI"]
+[node name="SidePanel" parent="pausable/UI" instance=ExtResource("3_0gmds")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 616.0
+offset_top = -325.0
+offset_right = 726.0
+offset_bottom = -90.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="pausable/UI"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -581,28 +614,28 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.447059, 0.592157, 0.654902, 1)
 
-[node name="turret-button" type="Button" parent="UI"]
+[node name="turret-button" type="Button" parent="pausable/UI"]
 layout_mode = 0
 offset_left = 686.0
 offset_right = 726.0
 offset_bottom = 40.0
 icon = ExtResource("2_ku564")
 
-[node name="laser-button" type="Button" parent="UI"]
+[node name="laser-button" type="Button" parent="pausable/UI"]
 layout_mode = 0
 offset_left = 728.0
 offset_right = 768.0
 offset_bottom = 40.0
 icon = ExtResource("3_0uep1")
 
-[node name="emitter-button" type="Button" parent="UI"]
+[node name="emitter-button" type="Button" parent="pausable/UI"]
 layout_mode = 0
 offset_left = 645.0
 offset_right = 685.0
 offset_bottom = 40.0
 icon = ExtResource("4_65qyf")
 
-[node name="Label" type="Label" parent="UI"]
+[node name="Label" type="Label" parent="pausable/UI"]
 layout_mode = 0
 offset_left = 4.0
 offset_right = 193.0
@@ -611,10 +644,10 @@ scale = Vector2(0.75, 0.75)
 text = "(left click) to place tower
 (r) to rotate tower"
 
-[node name="Ysort" type="Node2D" parent="."]
+[node name="Ysort" type="Node2D" parent="pausable"]
 y_sort_enabled = true
 
-[node name="Terrain" type="TileMap" parent="Ysort"]
+[node name="Terrain" type="TileMap" parent="pausable/Ysort"]
 y_sort_enabled = true
 tile_set = SubResource("TileSet_ul1at")
 collision_visibility_mode = 1
@@ -626,34 +659,34 @@ layer_1/name = "Objects"
 layer_1/y_sort_enabled = true
 layer_1/tile_data = PackedInt32Array(1376259, 393216, 0, 1441795, 393216, 2, 1507331, 458752, 1, 1572867, 458752, 1, 1638403, 458752, 1, 1310724, 393216, 0, 1376260, 458752, 1, 1441796, 458752, 1, 1507332, 458752, 1, 1572868, 458752, 1, 1638404, 458752, 1, 1245189, 262144, 2, 1310725, 458752, 1, 1376261, 458752, 1, 1441797, 458752, 1, 1507333, 458752, 1, 1572869, 458752, 1, 1638405, 458752, 1, 1245190, 393216, 0, 1310726, 458752, 1, 1376262, 458752, 1, 1441798, 458752, 1, 1507334, 458752, 1, 1572870, 458752, 1, 1638406, 458752, 1, 1376263, 458752, 1, 1441799, 458752, 1, 1507335, 458752, 1, 1572871, 458752, 1, 1638407, 458752, 1, 1310728, 524288, 0, 1376264, 458752, 1, 1441800, 458752, 1, 1507336, 458752, 1, 1572872, 458752, 1, 1638408, 458752, 1, 1376265, 524288, 1, 1441801, 524288, 0, 1507337, 458752, 1, 1572873, 458752, 1, 1638409, 458752, 1, 1441802, 393216, 0, 1507338, 458752, 1, 1572874, 458752, 1, 1638410, 458752, 1, 1376267, 262144, 2, 1441803, 524288, 1, 1507339, 524288, 0, 1572875, 458752, 1, 1638411, 458752, 1, 1572876, 524288, 0, 1638412, 458752, 1, 1507341, 262144, 2, 1572877, 393216, 0, 1507342, 393216, 0, 1507347, 262144, 2, 1376277, 327680, 1, 1572885, 262144, 0, 1441825, 262144, 0, 1376290, 327680, 2, 1507362, 393216, 0, 1507363, 524288, 0, 1572899, 458752, 1, 1310756, 327680, 2, 1441828, 262144, 0, 1507364, 393216, 0, 1572900, 458752, 1, 1245221, 196608, 2, 1376293, 393216, 1, 1441829, 393216, 1, 1507365, 458752, 1, 1572901, 458752, 1, 1245222, 393216, 1, 1310758, 393216, 0, 1376294, 458752, 1, 1441830, 458752, 1, 1507366, 458752, 1, 1572902, 458752, 1, 1179687, 393216, 0, 1245223, 458752, 1, 1310759, 458752, 1, 1376295, 458752, 1, 1441831, 458752, 1, 1507367, 458752, 1, 1572903, 524288, 2, 1179688, 524288, 0, 1245224, 458752, 1, 1310760, 458752, 1, 1376296, 458752, 1, 1441832, 458752, 1, 1507368, 524288, 2, 1572904, 589824, 0, 1048617, 196608, 2, 1245225, 524288, 0, 1310761, 524288, 2, 1376297, 524288, 0, 1441833, 524288, 2, 1507369, 655360, 0, 1572905, 655360, 1, 1179690, 327680, 2, 1376298, 589824, 0, 1441834, 589824, 2, 1507370, 589824, 0, 1572906, 655360, 1, 1310763, 589824, 0, 1376299, 655360, 1, 1441835, 655360, 1, 1507371, 655360, 1, 1572907, 655360, 1, 1703939, 458752, 1, 1703940, 458752, 1, 1114117, 327680, 1, 1703941, 458752, 1, 1703942, 458752, 1, 1245191, 524288, 0, 1310727, 458752, 1, 1703943, 458752, 1, 1703944, 458752, 1, 1245193, 327680, 1, 1703945, 458752, 1, 1703946, 458752, 1, 1703947, 458752, 1, 1703948, 458752, 1, 1638413, 458752, 1, 1703949, 458752, 1, 1572878, 458752, 1, 1638414, 458752, 1, 1703950, 458752, 1, 1507343, 524288, 0, 1572879, 458752, 1, 1638415, 458752, 1, 1703951, 458752, 1, 1441808, 327680, 1, 1572880, 524288, 0, 1638416, 458752, 1, 1703952, 458752, 1, 1572881, 262144, 2, 1638417, 524288, 0, 1703953, 458752, 1, 1638418, 262144, 0, 1703954, 524288, 0, 1703955, 262144, 0, 1572884, 262144, 0, 1638420, 262144, 0, 1703957, 262144, 0, 1507350, 262144, 0, 1572886, 262144, 0, 1638422, 262144, 0, 1703958, 262144, 0, 1441815, 262144, 0, 1507351, 262144, 0, 1572887, 262144, 0, 1638423, 262144, 0, 1507352, 262144, 0, 1572888, 262144, 0, 1638424, 262144, 0, 1703960, 262144, 0, 1572889, 262144, 0, 1638425, 327680, 0, 1703961, 262144, 0, 1441818, 327680, 1, 1572890, 327680, 0, 1638426, 327680, 0, 1507355, 327680, 1, 1638427, 327680, 0, 1638429, 327680, 0, 1638430, 262144, 0, 1572895, 262144, 0, 1507360, 327680, 0, 1638432, 393216, 1, 1572897, 393216, 0, 1638433, 458752, 1, 1703969, 393216, 2, 1572898, 458752, 1, 1638434, 458752, 1, 1703970, 458752, 1, 1638435, 458752, 1, 1703971, 524288, 2, 1638436, 524288, 2, 1703972, 196608, 2, 1638437, 393216, 2, 1638438, 524288, 2, 1703975, 327680, 2, 1638440, 589824, 2, 1703976, 589824, 0, 1638441, 655360, 1, 1703977, 655360, 1, 1638442, 655360, 1, 1703978, 655360, 1, 1048619, 196608, 2, 1638443, 655360, 1, 1703979, 655360, 1, 1114156, 196608, 2, 1245228, 327680, 2, 1310764, 720896, 0, 1376300, 655360, 1, 1441836, 655360, 1, 1507372, 655360, 1, 1572908, 655360, 1, 1638444, 655360, 1, 1703980, 655360, 1, 1310765, 589824, 0, 1376301, 655360, 1, 1441837, 655360, 1, 1507373, 655360, 1, 1572909, 655360, 1, 1638445, 655360, 1, 1703981, 655360, 1, 1245230, 589824, 0, 1310766, 655360, 1, 1376302, 655360, 1, 1441838, 655360, 1, 1507374, 655360, 1, 1572910, 655360, 1, 1638446, 655360, 1, 1703982, 655360, 1, 1048623, 196608, 2, 1179695, 327680, 2, 1245231, 720896, 0, 1310767, 655360, 1, 1376303, 655360, 1, 1441839, 655360, 1, 1507375, 655360, 1, 1572911, 655360, 1, 1638447, 655360, 1, 1703983, 655360, 1, 1310768, 720896, 0, 1376304, 655360, 1, 1441840, 655360, 1, 1507376, 655360, 1, 1572912, 655360, 1, 1638448, 655360, 1, 1703984, 655360, 1, 1703938, 458752, 1, 1638402, 458752, 1, 1572866, 458752, 1, 1507330, 393216, 0, 1572865, 393216, 0, 1638401, 458752, 1, 1703937, 458752, 1, 1703936, 458752, 1, 1638400, 393216, 0, 1769471, 393216, 0)
 
-[node name="creatures" type="Node2D" parent="Ysort"]
+[node name="creatures" type="Node2D" parent="pausable/Ysort"]
 y_sort_enabled = true
 
-[node name="towers" type="Node2D" parent="Ysort"]
+[node name="towers" type="Node2D" parent="pausable/Ysort"]
 z_index = 1
 
-[node name="Turret" type="AnimatedSprite2D" parent="Ysort/towers"]
+[node name="Turret" type="AnimatedSprite2D" parent="pausable/Ysort/towers"]
 visible = false
 position = Vector2(208, 142)
 sprite_frames = SubResource("SpriteFrames_li8lk")
 autoplay = "default"
 
-[node name="Turret2" type="AnimatedSprite2D" parent="Ysort/towers"]
+[node name="Turret2" type="AnimatedSprite2D" parent="pausable/Ysort/towers"]
 visible = false
 position = Vector2(183, 217)
 rotation = 0.785397
 sprite_frames = SubResource("SpriteFrames_japh3")
 animation = &"rockets"
 
-[node name="Academy" parent="." instance=ExtResource("7_k3toq")]
+[node name="Academy" parent="pausable" instance=ExtResource("7_k3toq")]
 position = Vector2(384, 224)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="pausable"]
 anchor_mode = 0
 
-[node name="EnemyWaves" parent="." instance=ExtResource("11_eg6ov")]
+[node name="EnemyWaves" parent="pausable" instance=ExtResource("11_eg6ov")]
 
-[connection signal="pressed" from="UI/turret-button" to="." method="_on_turretbutton_pressed"]
-[connection signal="pressed" from="UI/laser-button" to="." method="_on_laserbutton_pressed"]
-[connection signal="pressed" from="UI/emitter-button" to="." method="_on_emitterbutton_pressed"]
-[connection signal="spawn_wave" from="EnemyWaves" to="." method="_on_enemy_waves_spawn_wave"]
+[connection signal="pressed" from="pausable/UI/turret-button" to="." method="_on_turretbutton_pressed"]
+[connection signal="pressed" from="pausable/UI/laser-button" to="." method="_on_laserbutton_pressed"]
+[connection signal="pressed" from="pausable/UI/emitter-button" to="." method="_on_emitterbutton_pressed"]
+[connection signal="spawn_wave" from="pausable/EnemyWaves" to="." method="_on_enemy_waves_spawn_wave"]
