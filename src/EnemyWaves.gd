@@ -8,60 +8,62 @@ class_name EnemyWaves
 
 @onready var timer = $Timer
 
-var waves : Array[Array]
+var waves : Array
+var current_waves #Array[Array[enemies],time]
 
 signal spawn_wave(enemy_type)
+signal waves_over()
 
 func _ready():
-	waves = [
-			[larva,15],
-			[larva,10],
-			[larva,8],
-			[larva,7],
-			[larva,5],
-			[larva,5],
-			[larva,10],
-			[scorpion,10],
-			[larva,2],
-			[larva,2],
-			[larva,2],
-			[larva,2],
-			[larva,10],
-			[scorpion,10],
-			[scorpion,5],
-			[scorpion,5],
-			[scorpion,10],
-			[scorpion,5],
-			[scorpion,5],
-			[scorpion,2],[larva,1],[larva,5],
-			[scorpion,5],
-			[scorpion,2],
-			[scorpion,3],
-			[scorpion,3],
-			[scorpion,10],
-			[magma_crab,10],
-			[scorpion,3],
-			[magma_crab,5],
-			[larva,1],[larva,1],[larva,1],[larva,1],
-			[scorpion,3],[magma_crab,3],[scorpion,3],[scorpion,3],[magma_crab,3],
-			[larva,1],[larva,1],[larva,1],[larva,1],[scorpion,2],[magma_crab,5],
-			[magma_crab,1],[magma_crab,1],[magma_crab,1],[magma_crab,10],
-			[beetle,30],
-			[scorpion,1],[magma_crab,1],[scorpion,1],[scorpion,1],[magma_crab,10],
-			[beetle,20],
-			[magma_crab,1],[magma_crab,1],[magma_crab,1],[magma_crab,5],[beetle,10],
-			[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[beetle,10],
-			[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[beetle,10],
-			[magma_crab,0.5],[beetle,2],[magma_crab,0.5],[beetle,2],[magma_crab,0.5],[beetle,2],[magma_crab,0.5],[beetle,2]
-			]
+	waves = [1,1,0,0]
 	
-	timer.start(15)
+	start_waves()
+
+func add_wave(enemy_type):
+	waves[enemy_type] += 1
+
+func remove_wave(enemy_type):
+	waves[enemy_type] -= 1
+
+func start_waves():
+	print(waves)
+	var enemies = []
+	for enemy_type in range(len(waves)):
+		for i in range(waves[enemy_type]):
+			enemies.append(enemy_type)
+	var n_per_wave = max(len(enemies)/10,1)
+	enemies.shuffle()
+	
+	current_waves = []
+	
+	while len(enemies) > 0:
+		var wave = []
+		for x in range(n_per_wave):
+			wave.append(enemies.pop_front())
+		current_waves.append([wave,randi_range(5,5+min(n_per_wave,20))])
+	print(current_waves)
+	
+	timer.start(30)
 
 func _on_timer_timeout():
-	var next_wave = waves.pop_front()
+	var next_wave = current_waves[0]
 	if next_wave == null:
-		next_wave = [magma_crab,1]
-		waves = [[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[beetle,2]]
-	var enemy_type = next_wave[0]
-	emit_signal("spawn_wave",enemy_type)
-	timer.start(next_wave[1])
+		end_waves()
+		return
+	
+	if len(next_wave[0]) == 0:
+		current_waves.pop_front()
+		if len(current_waves) > 0:
+			timer.start(next_wave[1])
+		else:
+			end_waves()
+	else:
+		var enemy_type = next_wave[0].pop_front()
+		print(enemy_type)
+		emit_signal("spawn_wave",enemy_type)
+		timer.start(1)
+
+func end_waves():
+	emit_signal("waves_over")
+	timer.stop()
+

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://by8vnspp4d8vi"]
+[gd_scene load_steps=23 format=3 uid="uid://by8vnspp4d8vi"]
 
 [ext_resource type="Script" path="res://src/turret/Turret.gd" id="1_yj4np"]
 [ext_resource type="Texture2D" uid="uid://du3r2mchs5yhd" path="res://assets/ui/circle.png" id="2_5lamd"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ddoraqpy25syy" path="res://assets/turrets/weapons32x32.png" id="3_n0fwn"]
 [ext_resource type="Texture2D" uid="uid://be24fis5lxbqv" path="res://assets/turrets/turret_01_65x46.png" id="4_4miko"]
 [ext_resource type="Texture2D" uid="uid://210am8dlu3ur" path="res://assets/turrets/turret_01_48x48.png" id="4_48sev"]
+[ext_resource type="AudioStream" uid="uid://es07eh22dit5" path="res://assets/sounds/turret.wav" id="8_0n25w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_30ets"]
 atlas = ExtResource("4_4miko")
@@ -161,6 +162,10 @@ shape = SubResource("CircleShape2D_5plb2")
 shape = SubResource("RectangleShape2D_qo7gc")
 
 [node name="attack_cooldown" type="Timer" parent="."]
+
+[node name="attack_audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_0n25w")
+bus = &"sfx"
 
 [connection signal="body_entered" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_entered"]
 [connection signal="body_exited" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_exited"]

@@ -8,24 +8,31 @@ extends Control
 @onready var emitter_button = $"pausable/UI/emitter-button"
 @onready var laser_button = $"pausable/UI/laser-button"
 
-@onready var coins_label = $Coins
+@onready var coins_label = $Overlay/Coins
 @onready var health_label = $"Player health"
+@onready var next_wave_label = $Next_wave
 @onready var academy = $pausable/Academy
 
 @onready var pause_tree = $pausable
 @onready var pause_menu = $Overlay/PauseMenu
 @onready var side_panel = $pausable/UI/SidePanel
+@onready var shop = $Overlay/Shop
+
+@onready var enemy_spawner = $pausable/EnemyWaves
 
 var screen_size : Vector2
 var grid_screen : Rect2i #visible grid area
 var place_area : Rect2 #area where you can place turrets
 var astargrid : AStarGrid2D
 var pheromones_grid : Array[Vector2]
+var path_grid : Array[Vector2i]
 
 var enemy_path_start : Vector2
 var enemy_path_end : Vector2
 
 var placing_turret
+
+var waves_over = false
 
 func _ready():
 	enemy_path_start = Vector2(academy.position/32)
@@ -66,6 +73,7 @@ func set_terrain():
 			if terrain.get_cell_tile_data(0, new_loc*2).get_terrain() == 1:
 				#print(astargrid.get_point_weight_scale(new_loc))
 				astargrid.set_point_weight_scale(new_loc,  astargrid.get_point_weight_scale(new_loc) - 4)
+				path_grid.append(new_loc)
 
 func create_navpath(start):
 	#print(start/32,end/32)
@@ -126,12 +134,17 @@ func set_color_coins(button, coins, tower_type):
 
 func _process(_delta):
 	var coins = GlobalVariables.get_coins()
+	next_wave_label.text = 'Next wave in ' + str(round(enemy_spawner.timer.get_time_left())) + 's'
 	coins_label.text = 'Coins: ' + str(coins)
 	health_label.text = 'Health: ' + str(GlobalVariables.get_player_health())
 	set_color_coins(turret_button, coins, GlobalVariables.TOWERS.TURRET)
 	set_color_coins(laser_button, coins, GlobalVariables.TOWERS.LASER)
 	set_color_coins(emitter_button, coins, GlobalVariables.TOWERS.EMITTER)
 	queue_redraw()
+	
+	if waves_over and unit_tree.get_child_count() == 0:
+		waves_over = false
+		shop.open()
 
 #func get_random_loc():
 #	return Vector2(randi_range(1,screen_size.x),
@@ -143,26 +156,29 @@ func _process(_delta):
 #	#print(new_time)
 #	timer.start(new_time)
 
-func spawn_unit(enemy_type, pos):
+func spawn_unit(enemy_type : GlobalVariables.ENEMIES, pos):
 	var enemy
-	enemy = enemy_type.instantiate()
+	enemy = load(GlobalVariables.enemy_stats[enemy_type]['path']).instantiate()
 	enemy.set_position(pos.snapped(Vector2(GlobalVariables.GRID_CELL_SIZE)) + Vector2(16,16))
 	unit_tree.add_child(enemy)
 	#print(create_navpath(enemy.position,enemy.target))
 	enemy.start_navigation(create_navpath(enemy.position))
 	enemy.nav_agent = astargrid
 
+@onready var place_audio = $place_audio
+
 func place_turret(t, pos):
 	var grid_pos = (pos / Vector2(32,32)).floor()
 	
 	var grid_pos2i = Vector2i(grid_pos)
-	if not astargrid.is_point_solid(grid_pos2i):
+	if not astargrid.is_point_solid(grid_pos2i) and grid_pos2i not in path_grid:
 		
 		if test_solid_point(grid_pos) == false:
 			return
 		set_nav_weight(grid_pos,t.get_attack_weight(),t.get_attack_weight_area())
 		t.set_position(grid_pos*Vector2(32,32))
 		t.place()
+		place_audio.play()
 		GlobalVariables.change_coins(-t.get_cost())
 		placing_turret = null
 		#towers.set_cells_terrain_connect(0, [grid_pos2i], 0, 0)
@@ -175,7 +191,9 @@ func update_enemy_pathing():
 			child.start_navigation(create_navpath(child.position))
 
 func _unhandled_input(event):
-	if event.is_action_pressed("click") and placing_turret != null:
+	if event.is_action_pressed("clear_selection"):
+		placing_turret.free()
+	elif event.is_action_pressed("click") and placing_turret != null:
 		var mouse_pos = get_global_mouse_position()
 		if place_area.has_point(mouse_pos):
 			place_turret(placing_turret, mouse_pos)
@@ -203,4 +221,10 @@ func load_tower(tower):
 func _on_enemy_waves_spawn_wave(enemy_type):
 	spawn_unit(enemy_type, enemy_path_start*32)
 
+func _on_enemy_waves_waves_over():
+	waves_over = true
 
+@onready var lose_audio = $lose_audio
+
+func lose():
+	lose_audio.play()

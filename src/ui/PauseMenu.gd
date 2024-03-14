@@ -1,6 +1,7 @@
 extends Control
 
 @onready var resume_button = $VBoxContainer/Resume
+@onready var volume_slider = $VBoxContainer/Volume
 
 @export var pause_tree : Control
 
@@ -8,6 +9,8 @@ signal resume
 
 func _ready():
 	visible = false
+	
+	volume_slider.value = db_to_linear(AudioServer.get_bus_volume_db(0))
 
 func open():
 	pause_tree.set_process_mode(PROCESS_MODE_DISABLED)
@@ -35,3 +38,6 @@ func _unhandled_input(event):
 			close()
 			
 		get_viewport().set_input_as_handled()
+
+func _on_volume_value_changed(value):
+	AudioServer.set_bus_volume_db(0, linear_to_db(value))

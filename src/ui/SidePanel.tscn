@@ -38,13 +38,13 @@ mouse_filter = 2
 
 [node name="name" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 17
 text = "Tower name"
 autowrap_mode = 3
 
 [node name="description" type="RichTextLabel" parent="VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/normal_font_size = 12
 text = "Tower description"
 fit_content = true

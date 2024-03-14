@@ -19,13 +19,28 @@ enum TOWERS {
 	LASER
 }
 
+enum ENEMIES {
+	LARVA,
+	SCORPION,
+	ROACH,
+	BEETLE
+}
+
 var stats = {
 	TOWERS.TURRET : {'path' : "res://src/turret/Turret.tscn", 'cost' : 15, 'name' : 'Turret', 
 	'description' : "Basic turret shoots one at enemy at a time.\n\nDeals 3 damage and fires 6 times per second"},
 	TOWERS.EMITTER : {'path' : "res://src/turret/Emitter.tscn", 'cost' : 10, 'name' : 'Emitter',
 	'description' : "Pheromone emitter attracts enemies towards it's area."},
 	TOWERS.LASER : {'path' : "res://src/turret/Laser.tscn", 'cost' : 30, 'name' : 'Laser',
-	'description' : "Powerful laser that deals damage over time in a straight line to one target.\n\nDeals 150 damage over 10s and cools down for 30s"},
+	'description' : "Powerful laser that deals damage over time in a straight line to one target.\n\nDeals 150 damage over 10s and cools down for 30s"}
+	
+	}
+
+var enemy_stats = {
+	ENEMIES.LARVA : {'path' : "res://src/enemy/Larva.tscn", 'cost' : 5, 'name' : 'Larva'},
+	ENEMIES.SCORPION : {'path' : "res://src/enemy/Scorpion.tscn", 'cost' : 5, 'name' : 'Scorpion'},
+	ENEMIES.ROACH : {'path' : "res://src/enemy/Larva.tscn", 'cost' : 5, 'name' : 'Roach'},
+	ENEMIES.BEETLE : {'path' : "res://src/enemy/Beetle.tscn", 'cost' : 5, 'name' : 'Beetle'}
 }
 
 func _ready():
