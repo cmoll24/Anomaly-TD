@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://c8mv6sc5r4qh5"]
+[gd_scene load_steps=31 format=3 uid="uid://cmo0rubhmxnth"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_a4x6q"]
 [ext_resource type="PackedScene" uid="uid://d1gb2lemfq8te" path="res://src/ui/Shop.tscn" id="2_l0pse"]
@@ -418,7 +418,7 @@ texture = ExtResource("8_himc2")
 11:10/0 = 0
 11:10/0/z_index = 1
 
-[sub_resource type="TileSet" id="TileSet_ul1at"]
+[sub_resource type="TileSet" id="TileSet_5eu02"]
 terrain_set_0/mode = 1
 terrain_set_0/terrain_0/name = "Grass"
 terrain_set_0/terrain_0/color = Color(0.501961, 0.941176, 0.25098, 1)
@@ -558,6 +558,21 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_a4x6q")
 
+[node name="Player health" type="Label" parent="."]
+layout_mode = 0
+offset_right = 57.0
+offset_bottom = 23.0
+scale = Vector2(0.9, 0.9)
+text = "Health:"
+
+[node name="Next_wave" type="Label" parent="."]
+layout_mode = 0
+offset_left = 328.0
+offset_right = 449.0
+offset_bottom = 23.0
+scale = Vector2(0.9, 0.9)
+text = "Next wave in xs"
+
 [node name="Overlay" type="Control" parent="."]
 z_index = 5
 layout_mode = 1
@@ -567,21 +582,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-
-[node name="Player_health" type="Label" parent="Overlay"]
-layout_mode = 0
-offset_right = 57.0
-offset_bottom = 23.0
-scale = Vector2(0.9, 0.9)
-text = "Health:"
-
-[node name="Next_wave" type="Label" parent="Overlay"]
-layout_mode = 0
-offset_left = 328.0
-offset_right = 449.0
-offset_bottom = 23.0
-scale = Vector2(0.9, 0.9)
-text = "Next wave in xs"
 
 [node name="Shop" parent="Overlay" node_paths=PackedStringArray("enemy_spawner") instance=ExtResource("2_l0pse")]
 visible = false
@@ -595,14 +595,6 @@ offset_right = 57.0
 offset_bottom = 40.0
 scale = Vector2(0.9, 0.9)
 text = "Coins:"
-
-[node name="Score" type="Label" parent="Overlay"]
-layout_mode = 0
-offset_top = 33.0
-offset_right = 57.0
-offset_bottom = 56.0
-scale = Vector2(0.9, 0.9)
-text = "Score:"
 
 [node name="PauseMenu" parent="Overlay" node_paths=PackedStringArray("pause_tree") instance=ExtResource("3_5hudr")]
 visible = false
@@ -672,7 +664,6 @@ offset_bottom = 40.0
 icon = ExtResource("7_sk0ln")
 
 [node name="Label2" type="Label" parent="pausable/UI"]
-layout_mode = 0
 offset_left = 604.0
 offset_top = -15.0
 offset_right = 839.0
@@ -681,7 +672,6 @@ scale = Vector2(0.75, 0.75)
 text = "Cost:       10         15          30"
 
 [node name="Label" type="Label" parent="pausable/UI"]
-layout_mode = 0
 offset_left = 4.0
 offset_top = -16.0
 offset_right = 225.0
@@ -691,20 +681,12 @@ text = "(left click) to place tower
 (r) to rotate tower
 (right click) to clear selection"
 
-[node name="start_wave" type="Button" parent="pausable/UI"]
-layout_mode = 0
-offset_left = 635.0
-offset_top = -391.0
-offset_right = 766.0
-offset_bottom = -360.0
-text = "Start next Wave"
-
 [node name="Ysort" type="Node2D" parent="pausable"]
 y_sort_enabled = true
 
 [node name="Terrain" type="TileMap" parent="pausable/Ysort"]
 y_sort_enabled = true
-tile_set = SubResource("TileSet_ul1at")
+tile_set = SubResource("TileSet_5eu02")
 collision_visibility_mode = 1
 format = 2
 layer_0/name = "Terrain"
@@ -752,7 +734,5 @@ bus = &"sfx"
 [connection signal="pressed" from="pausable/UI/turret-button" to="." method="_on_turretbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/laser-button" to="." method="_on_laserbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/emitter-button" to="." method="_on_emitterbutton_pressed"]
-[connection signal="pressed" from="pausable/UI/start_wave" to="." method="_on_start_wave_pressed"]
 [connection signal="spawn_wave" from="pausable/EnemyWaves" to="." method="_on_enemy_waves_spawn_wave"]
 [connection signal="waves_over" from="pausable/EnemyWaves" to="." method="_on_enemy_waves_waves_over"]
-[connection signal="finished" from="lose_audio" to="." method="_on_lose_audio_finished"]

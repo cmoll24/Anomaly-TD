@@ -15,7 +15,7 @@ signal spawn_wave(enemy_type)
 signal waves_over()
 
 func _ready():
-	waves = [1,0,0,0]
+	waves = [1,1,0,0]
 	
 	start_waves()
 
@@ -26,6 +26,7 @@ func remove_wave(enemy_type):
 	waves[enemy_type] -= 1
 
 func start_waves():
+	print(waves)
 	var enemies = []
 	for enemy_type in range(len(waves)):
 		for i in range(waves[enemy_type]):
@@ -40,26 +41,27 @@ func start_waves():
 		for x in range(n_per_wave):
 			wave.append(enemies.pop_front())
 		current_waves.append([wave,randi_range(5,5+min(n_per_wave,20))])
+	print(current_waves)
+	
 	timer.start(30)
 
 func _on_timer_timeout():
-	if len(current_waves) > 0:
-		var next_wave = current_waves[0]
-		if next_wave == null:
-			end_waves()
-			return
-		
-		if len(next_wave[0]) == 0:
-			current_waves.pop_front()
-			if len(current_waves) > 0:
-				timer.start(next_wave[1])
-			else:
-				end_waves()
+	var next_wave = current_waves[0]
+	if next_wave == null:
+		end_waves()
+		return
+	
+	if len(next_wave[0]) == 0:
+		current_waves.pop_front()
+		if len(current_waves) > 0:
+			timer.start(next_wave[1])
 		else:
-			var enemy_type = next_wave[0].pop_front()
-			if enemy_type != null:
-				emit_signal("spawn_wave",enemy_type)
-				timer.start(1)
+			end_waves()
+	else:
+		var enemy_type = next_wave[0].pop_front()
+		print(enemy_type)
+		emit_signal("spawn_wave",enemy_type)
+		timer.start(1)
 
 func end_waves():
 	emit_signal("waves_over")

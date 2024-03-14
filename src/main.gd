@@ -9,9 +9,8 @@ extends Control
 @onready var laser_button = $"pausable/UI/laser-button"
 
 @onready var coins_label = $Overlay/Coins
-@onready var health_label = $Overlay/Player_health
-@onready var next_wave_label = $Overlay/Next_wave
-@onready var score_label = $Overlay/Score
+@onready var health_label = $"Player health"
+@onready var next_wave_label = $Next_wave
 @onready var academy = $pausable/Academy
 
 @onready var pause_tree = $pausable
@@ -35,10 +34,6 @@ var placing_turret
 
 var waves_over = false
 
-var score = 0
-
-var game_over = false
-
 func _ready():
 	enemy_path_start = Vector2(academy.position/32)
 	enemy_path_end = Vector2(-2,-2)
@@ -60,7 +55,6 @@ func _ready():
 	set_terrain()
 	
 	GlobalVariables.set_coins(GlobalVariables.starting_coins)
-	GlobalVariables.lost_game.connect(lose)
 	
 	#spawn_unit(enemy_path_start*32)
 	#timer.start()
@@ -140,18 +134,16 @@ func set_color_coins(button, coins, tower_type):
 
 func _process(_delta):
 	var coins = GlobalVariables.get_coins()
-	score_label.text = 'Score: ' + str(score)
 	next_wave_label.text = 'Next wave in ' + str(round(enemy_spawner.timer.get_time_left())) + 's'
 	coins_label.text = 'Coins: ' + str(coins)
 	health_label.text = 'Health: ' + str(GlobalVariables.get_player_health())
 	set_color_coins(turret_button, coins, GlobalVariables.TOWERS.TURRET)
 	set_color_coins(laser_button, coins, GlobalVariables.TOWERS.LASER)
 	set_color_coins(emitter_button, coins, GlobalVariables.TOWERS.EMITTER)
-	#queue_redraw()
+	queue_redraw()
 	
-	if waves_over and unit_tree.get_child_count() == 0 and not game_over:
+	if waves_over and unit_tree.get_child_count() == 0:
 		waves_over = false
-		score += 1
 		shop.open()
 
 #func get_random_loc():
@@ -236,12 +228,3 @@ func _on_enemy_waves_waves_over():
 
 func lose():
 	lose_audio.play()
-	GlobalVariables.set_highscore(score)
-	pause_tree.set_process_mode(PROCESS_MODE_DISABLED)
-	game_over = true
-
-func _on_start_wave_pressed():
-	enemy_spawner._on_timer_timeout()
-
-func _on_lose_audio_finished():
-	var _error = get_tree().change_scene_to_file("res://src/title.tscn")

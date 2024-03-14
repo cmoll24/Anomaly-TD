@@ -10,7 +10,7 @@ var viewport_size : Vector2
 var GRID_CELL_SIZE = Vector2i(32,32)
 
 var coins :int = 0
-var starting_coins = 50000
+var starting_coins = 50
 var player_health = 20
 
 enum TOWERS {
@@ -28,9 +28,9 @@ enum ENEMIES {
 
 var stats = {
 	TOWERS.TURRET : {'path' : "res://src/turret/Turret.tscn", 'cost' : 15, 'name' : 'Turret', 
-	'description' : "Basic turret shoots at one enemy at a time.\n\nDeals 3 damage and fires 6 times per second"},
+	'description' : "Basic turret shoots one at enemy at a time.\n\nDeals 3 damage and fires 6 times per second"},
 	TOWERS.EMITTER : {'path' : "res://src/turret/Emitter.tscn", 'cost' : 10, 'name' : 'Emitter',
-	'description' : "Pheromone emitter attracts bugs towards it's area."},
+	'description' : "Pheromone emitter attracts enemies towards it's area."},
 	TOWERS.LASER : {'path' : "res://src/turret/Laser.tscn", 'cost' : 30, 'name' : 'Laser',
 	'description' : "Powerful laser that deals damage over time in a straight line to one target.\n\nDeals 150 damage over 10s and cools down for 30s"}
 	
@@ -38,14 +38,10 @@ var stats = {
 
 var enemy_stats = {
 	ENEMIES.LARVA : {'path' : "res://src/enemy/Larva.tscn", 'cost' : 5, 'name' : 'Larva'},
-	ENEMIES.SCORPION : {'path' : "res://src/enemy/Scorpion.tscn", 'cost' : 10, 'name' : 'Scorpion'},
-	ENEMIES.ROACH : {'path' : "res://src/enemy/MagmaCrab.tscn", 'cost' : 15, 'name' : 'Roach'},
-	ENEMIES.BEETLE : {'path' : "res://src/enemy/Beetle.tscn", 'cost' : 50, 'name' : 'Beetle'}
+	ENEMIES.SCORPION : {'path' : "res://src/enemy/Scorpion.tscn", 'cost' : 5, 'name' : 'Scorpion'},
+	ENEMIES.ROACH : {'path' : "res://src/enemy/Larva.tscn", 'cost' : 5, 'name' : 'Roach'},
+	ENEMIES.BEETLE : {'path' : "res://src/enemy/Beetle.tscn", 'cost' : 5, 'name' : 'Beetle'}
 }
-
-var highscore = 0
-
-signal lost_game
 
 func _ready():
 	viewport_size = get_viewport().get_visible_rect().size
@@ -60,16 +56,10 @@ func change_coins(val):
 func get_coins():
 	return coins
 
-func get_highscore():
-	return highscore
-
-func set_highscore(new_highscore):
-	highscore = new_highscore
-
 func damage_player(val):
 	player_health -= val
 	if player_health <= 0:
-		emit_signal('lost_game')
+		print('you are dead')
 
 func get_player_health():
 	return player_health
