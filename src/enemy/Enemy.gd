@@ -105,6 +105,7 @@ func _physics_process(_delta):
 		queue_free() #begin_navigation(random_target())
 		return
 	elif position.x < 0 or position.y < 0 or position.x > screen_size.x or position.y > screen_size.y:
+		GlobalVariables.damage_player(1)
 		queue_free()
 		return
 	var direction = (next_pos-position).floor()

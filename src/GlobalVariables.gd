@@ -10,6 +10,8 @@ var viewport_size : Vector2
 var GRID_CELL_SIZE = Vector2i(32,32)
 
 var coins :int = 0
+var starting_coins = 50
+var player_health = 20
 
 enum TOWERS {
 	TURRET,
@@ -32,9 +34,17 @@ func set_coins(init_val):
 
 func change_coins(val):
 	coins = max(coins+val,0)
-	
+
 func get_coins():
 	return coins
+
+func damage_player(val):
+	player_health -= val
+	if player_health <= 0:
+		print('you are dead')
+
+func get_player_health():
+	return player_health
 
 func get_screen_size() -> Vector2:
 	return viewport_size

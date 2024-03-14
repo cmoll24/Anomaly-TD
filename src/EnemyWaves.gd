@@ -4,6 +4,7 @@ class_name EnemyWaves
 @onready var larva = load("res://src/enemy/Larva.tscn")
 @onready var scorpion = load("res://src/enemy/Scorpion.tscn")
 @onready var magma_crab = load("res://src/enemy/MagmaCrab.tscn")
+@onready var beetle = load("res://src/enemy/Beetle.tscn")
 
 @onready var timer = $Timer
 
@@ -21,6 +22,8 @@ func _ready():
 			[larva,5],
 			[larva,10],
 			[scorpion,10],
+			[larva,2],
+			[larva,2],
 			[larva,2],
 			[larva,2],
 			[larva,10],
@@ -41,7 +44,15 @@ func _ready():
 			[magma_crab,5],
 			[larva,1],[larva,1],[larva,1],[larva,1],
 			[scorpion,3],[magma_crab,3],[scorpion,3],[scorpion,3],[magma_crab,3],
-			[larva,1],[larva,1],[larva,1],[larva,1],[scorpion,2],[magma_crab,2]
+			[larva,1],[larva,1],[larva,1],[larva,1],[scorpion,2],[magma_crab,5],
+			[magma_crab,1],[magma_crab,1],[magma_crab,1],[magma_crab,10],
+			[beetle,30],
+			[scorpion,1],[magma_crab,1],[scorpion,1],[scorpion,1],[magma_crab,10],
+			[beetle,20],
+			[magma_crab,1],[magma_crab,1],[magma_crab,1],[magma_crab,5],[beetle,10],
+			[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[beetle,10],
+			[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[beetle,10],
+			[magma_crab,0.5],[beetle,2],[magma_crab,0.5],[beetle,2],[magma_crab,0.5],[beetle,2],[magma_crab,0.5],[beetle,2]
 			]
 	
 	timer.start(15)
@@ -49,7 +60,8 @@ func _ready():
 func _on_timer_timeout():
 	var next_wave = waves.pop_front()
 	if next_wave == null:
-		next_wave = [magma_crab,0.5]
+		next_wave = [magma_crab,1]
+		waves = [[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[magma_crab,0.5],[beetle,2]]
 	var enemy_type = next_wave[0]
 	emit_signal("spawn_wave",enemy_type)
 	timer.start(next_wave[1])

@@ -9,6 +9,7 @@ extends Control
 @onready var laser_button = $"UI/laser-button"
 
 @onready var coins_label = $Coins
+@onready var health_label = $"Player health"
 
 @onready var academy = $Academy
 
@@ -43,7 +44,7 @@ func _ready():
 	astargrid.update()
 	set_terrain()
 	
-	GlobalVariables.set_coins(50)
+	GlobalVariables.set_coins(GlobalVariables.starting_coins)
 	
 	#spawn_unit(enemy_path_start*32)
 	#timer.start()
@@ -123,6 +124,7 @@ func set_color_coins(button, coins, tower_type):
 func _process(_delta):
 	var coins = GlobalVariables.get_coins()
 	coins_label.text = 'Coins: ' + str(coins)
+	health_label.text = 'Health: ' + str(GlobalVariables.get_player_health())
 	set_color_coins(turret_button, coins, GlobalVariables.TOWERS.TURRET)
 	set_color_coins(laser_button, coins, GlobalVariables.TOWERS.LASER)
 	set_color_coins(emitter_button, coins, GlobalVariables.TOWERS.EMITTER)
