@@ -10,7 +10,7 @@ var viewport_size : Vector2
 var GRID_CELL_SIZE = Vector2i(32,32)
 
 var coins :int = 0
-var starting_coins = 50000
+var starting_coins = 50
 var player_health = 20
 
 enum TOWERS {

@@ -30,7 +30,7 @@ func start_waves():
 	for enemy_type in range(len(waves)):
 		for i in range(waves[enemy_type]):
 			enemies.append(enemy_type)
-	var n_per_wave = max(len(enemies)/10,1)
+	var n_per_wave = max(len(enemies)/5,1)
 	enemies.shuffle()
 	
 	current_waves = []
@@ -38,7 +38,9 @@ func start_waves():
 	while len(enemies) > 0:
 		var wave = []
 		for x in range(n_per_wave):
-			wave.append(enemies.pop_front())
+			var next_enemy = enemies.pop_front()
+			if next_enemy != null:
+				wave.append(enemies.pop_front())
 		current_waves.append([wave,randi_range(5,5+min(n_per_wave,20))])
 	timer.start(30)
 
