@@ -1,90 +1,90 @@
 [gd_scene load_steps=14 format=3 uid="uid://yc2tbwd4vdch"]
 
-[ext_resource type="AudioStream" uid="uid://5lpniwfrgkww" path="res://assets/songs/v1.0_bass.wav" id="1_25vy7"]
 [ext_resource type="Script" path="res://src/musicControler.gd" id="1_33yy4"]
-[ext_resource type="AudioStream" uid="uid://cfm7cfeen022f" path="res://assets/songs/v1.0_clap.wav" id="2_t6nh6"]
-[ext_resource type="AudioStream" uid="uid://cgthvewthchmt" path="res://assets/songs/v1.0_crash.wav" id="3_psmaa"]
-[ext_resource type="AudioStream" uid="uid://x7wymlojadv1" path="res://assets/songs/v1.0_kick.wav" id="4_6cco6"]
-[ext_resource type="AudioStream" uid="uid://dl6fvrh06v41e" path="res://assets/songs/v1.0_lead.wav" id="5_0dx56"]
-[ext_resource type="AudioStream" uid="uid://dtegk3gahph8t" path="res://assets/songs/v1.0_pad 02.wav" id="6_vsf7m"]
-[ext_resource type="AudioStream" uid="uid://cqkyl687nq5r7" path="res://assets/songs/v1.0_pad.wav" id="7_3go8m"]
-[ext_resource type="AudioStream" uid="uid://b1uy3w1eim8lc" path="res://assets/songs/v1.0_shaker.wav" id="8_phqfw"]
-[ext_resource type="AudioStream" uid="uid://b2exmx6adtrc5" path="res://assets/songs/v1.0_snare.wav" id="9_68bkt"]
-[ext_resource type="AudioStream" uid="uid://bo55hgybjwxbu" path="res://assets/songs/v1.0_synth01.wav" id="10_srb0l"]
-[ext_resource type="AudioStream" uid="uid://ckt3suwlc3i4" path="res://assets/songs/v1.0_synth02.wav" id="11_7cwrm"]
-[ext_resource type="AudioStream" uid="uid://bxf1qic6y3hgv" path="res://assets/songs/v1.0_toms.wav" id="12_dfvqo"]
+[ext_resource type="AudioStream" uid="uid://bam316dh8flp3" path="res://assets/songs/v1.0_bass.ogg" id="2_uh3cq"]
+[ext_resource type="AudioStream" uid="uid://cimuny55w3eph" path="res://assets/songs/v1.0_clap.ogg" id="3_5wicr"]
+[ext_resource type="AudioStream" uid="uid://c5t35gj6dnpdv" path="res://assets/songs/v1.0_crash.ogg" id="4_l0cya"]
+[ext_resource type="AudioStream" uid="uid://c7eowlancdwrt" path="res://assets/songs/v1.0_kick.ogg" id="5_c2vkf"]
+[ext_resource type="AudioStream" uid="uid://c3v1au4ljwoqg" path="res://assets/songs/v1.0_lead.ogg" id="6_qmw4q"]
+[ext_resource type="AudioStream" uid="uid://cnyd50etbo057" path="res://assets/songs/v1.0_pad 02.ogg" id="7_6mby5"]
+[ext_resource type="AudioStream" uid="uid://m2vcys6rbssx" path="res://assets/songs/v1.0_pad.ogg" id="8_3sk5t"]
+[ext_resource type="AudioStream" uid="uid://dmucj61mvqvns" path="res://assets/songs/v1.0_shaker.ogg" id="9_te8nq"]
+[ext_resource type="AudioStream" uid="uid://bstk5oxkhkgga" path="res://assets/songs/v1.0_snare.ogg" id="10_7sy5q"]
+[ext_resource type="AudioStream" uid="uid://dyrq238g4xiqp" path="res://assets/songs/v1.0_synth01.ogg" id="11_36w18"]
+[ext_resource type="AudioStream" uid="uid://ddidxnknu86o8" path="res://assets/songs/v1.0_synth02.ogg" id="12_lss0y"]
+[ext_resource type="AudioStream" uid="uid://ehgjisi5mxa2" path="res://assets/songs/v1.0_toms.ogg" id="13_bl6ok"]
 
 [node name="MusicControler" type="Node"]
 script = ExtResource("1_33yy4")
 
 [node name="bass" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("1_25vy7")
+stream = ExtResource("2_uh3cq")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="clap" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_t6nh6")
+stream = ExtResource("3_5wicr")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="crash" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_psmaa")
+stream = ExtResource("4_l0cya")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="kick" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_6cco6")
+stream = ExtResource("5_c2vkf")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="lead" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_0dx56")
+stream = ExtResource("6_qmw4q")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="pad" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6_vsf7m")
+stream = ExtResource("7_6mby5")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="pad2" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("7_3go8m")
+stream = ExtResource("8_3sk5t")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="shaker" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_phqfw")
+stream = ExtResource("9_te8nq")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="snare" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("9_68bkt")
+stream = ExtResource("10_7sy5q")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="synth" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("10_srb0l")
+stream = ExtResource("11_36w18")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="synth2" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("11_7cwrm")
+stream = ExtResource("12_lss0y")
 volume_db = -80.0
 autoplay = true
 bus = &"music"
 
 [node name="toms" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("12_dfvqo")
+stream = ExtResource("13_bl6ok")
 volume_db = -80.0
 autoplay = true
 bus = &"music"

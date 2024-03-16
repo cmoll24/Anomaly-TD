@@ -213,11 +213,11 @@ func update_enemy_pathing():
 			child.start_navigation(create_navpath(child.position))
 
 func _unhandled_input(event):
-	if event.is_action_pressed("clear_selection"):
+	if event.is_action_pressed("clear_selection") and placing_turret:
 		placing_turret.free()
 	elif event.is_action_pressed("click") and placing_turret != null:
 		var mouse_pos = get_global_mouse_position()
-		if place_area.has_point(mouse_pos):
+		if place_area.has_point(mouse_pos) and GlobalVariables.get_coins() >= GlobalVariables.stats[placing_turret.tower_type]['cost']:
 			place_turret(placing_turret, mouse_pos)
 			get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("rotate") and placing_turret:
