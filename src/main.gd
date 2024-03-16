@@ -21,6 +21,8 @@ extends Control
 
 @onready var enemy_spawner = $pausable/EnemyWaves
 
+@onready var music_controler = $MusicControler
+
 var screen_size : Vector2
 var grid_screen : Rect2i #visible grid area
 var place_area : Rect2 #area where you can place turrets
@@ -138,7 +140,8 @@ func set_color_coins(button, coins, tower_type):
 	else:
 		button.self_modulate = Color(1,0,0,0.5)
 
-func _process(_delta):
+func _process(delta):
+	
 	var coins = GlobalVariables.get_coins()
 	score_label.text = 'Score: ' + str(score)
 	var time_left = round(enemy_spawner.timer.get_time_left())
@@ -155,10 +158,15 @@ func _process(_delta):
 	set_color_coins(emitter_button, coins, GlobalVariables.TOWERS.EMITTER)
 	#queue_redraw()
 	
-	if waves_over and unit_tree.get_child_count() == 0 and not game_over:
-		waves_over = false
-		score += 1
-		shop.open()
+	if game_over:
+		music_controler.fade_music(delta)
+	else:
+		var n_units = unit_tree.get_child_count()
+		music_controler.set_music_level(n_units, delta)
+		if waves_over and unit_tree.get_child_count() == 0 and not game_over:
+			waves_over = false
+			score += 1
+			shop.open()
 
 #func get_random_loc():
 #	return Vector2(randi_range(1,screen_size.x),

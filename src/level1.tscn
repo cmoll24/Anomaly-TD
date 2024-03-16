@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://m2ue1gvxs63p"]
+[gd_scene load_steps=32 format=3 uid="uid://m2ue1gvxs63p"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_okiwm"]
 [ext_resource type="PackedScene" uid="uid://d1gb2lemfq8te" path="res://src/ui/Shop.tscn" id="2_lcohf"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cl1or2k7di0ma" path="res://src/EnemyWaves.tscn" id="12_7pwok"]
 [ext_resource type="AudioStream" uid="uid://d2so0k0m2212f" path="res://assets/sounds/place.wav" id="13_ds44v"]
 [ext_resource type="AudioStream" uid="uid://bcb3hdaa24iwu" path="res://assets/sounds/lose.wav" id="14_k0by0"]
+[ext_resource type="PackedScene" uid="uid://yc2tbwd4vdch" path="res://src/musicControler.tscn" id="15_momux"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h0a2a"]
 texture = ExtResource("8_oqley")
@@ -748,6 +749,8 @@ bus = &"sfx"
 [node name="lose_audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("14_k0by0")
 bus = &"sfx"
+
+[node name="MusicControler" parent="." instance=ExtResource("15_momux")]
 
 [connection signal="pressed" from="pausable/UI/turret-button" to="." method="_on_turretbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/laser-button" to="." method="_on_laserbutton_pressed"]
