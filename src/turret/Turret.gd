@@ -44,6 +44,7 @@ func calculate_closest_target():
 
 
 func attack_process(delta):
+	var target = calculate_closest_target()
 	if target and is_instance_valid(target):
 		var target_direction = (get_global_position()+offset).angle_to_point(target.global_position+Vector2(8,8)) + deg_to_rad(90) - rotation_point.rotation
 		gun_rotation.rotation = lerp_angle(gun_rotation.rotation, target_direction, 5*delta)
@@ -65,8 +66,10 @@ func rotate_turret():
 	rotation_point.rotation += deg_to_rad(90)
 
 func _on_attack_collision_body_entered(_body):
-	target = calculate_closest_target()
+	#target = calculate_closest_target()
+	pass
 
 func _on_attack_collision_body_exited(_body):
-	target = calculate_closest_target()
+	#target = calculate_closest_target()
+	pass
 

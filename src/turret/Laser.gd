@@ -12,6 +12,9 @@ func _ready():
 	side_panel.open(tower_type)
 
 func attack_process(delta):
+	var target = null
+	if can_attack:
+		target = calculate_closest_target()
 	if can_attack and not attacking_duration.is_stopped():
 			gun_anim.play("attack1")
 	

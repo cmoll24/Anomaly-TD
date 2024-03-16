@@ -141,7 +141,13 @@ func set_color_coins(button, coins, tower_type):
 func _process(_delta):
 	var coins = GlobalVariables.get_coins()
 	score_label.text = 'Score: ' + str(score)
-	next_wave_label.text = 'Next wave in ' + str(round(enemy_spawner.timer.get_time_left())) + 's'
+	var time_left = round(enemy_spawner.timer.get_time_left())
+	if waves_over:
+		next_wave_label.text = 'No more waves.'
+	elif time_left <= 1:
+		next_wave_label.text = 'Spawning wave!'
+	else:
+		next_wave_label.text = 'Next wave in ' + str(time_left) + 's'
 	coins_label.text = 'Coins: ' + str(coins)
 	health_label.text = 'Health: ' + str(GlobalVariables.get_player_health())
 	set_color_coins(turret_button, coins, GlobalVariables.TOWERS.TURRET)

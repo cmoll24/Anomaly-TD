@@ -10,6 +10,7 @@ class_name EnemyWaves
 
 var waves : Array
 var current_waves #Array[Array[enemies],time]
+var timing = 1
 
 signal spawn_wave(enemy_type)
 signal waves_over()
@@ -40,9 +41,9 @@ func start_waves():
 		for x in range(n_per_wave):
 			var next_enemy = enemies.pop_front()
 			if next_enemy != null:
-				wave.append(enemies.pop_front())
-		current_waves.append([wave,randi_range(5,5+min(n_per_wave,20))])
-	timer.start(30)
+				wave.append(next_enemy)
+		current_waves.append([wave,randi_range(5,5+min(n_per_wave/2,15))])
+	timer.start(max(30 - n_per_wave, 5))
 
 func _on_timer_timeout():
 	if len(current_waves) > 0:
@@ -51,6 +52,8 @@ func _on_timer_timeout():
 			end_waves()
 			return
 		
+		var enemy_type = next_wave[0].pop_front()
+		emit_signal("spawn_wave",enemy_type)
 		if len(next_wave[0]) == 0:
 			current_waves.pop_front()
 			if len(current_waves) > 0:
@@ -58,10 +61,12 @@ func _on_timer_timeout():
 			else:
 				end_waves()
 		else:
-			var enemy_type = next_wave[0].pop_front()
-			if enemy_type != null:
-				emit_signal("spawn_wave",enemy_type)
-				timer.start(1)
+			timer.start(max(
+				lerpf(1,
+					  0.2,
+					  len(next_wave[0])/20.0), 
+				0.2)
+				)
 
 func end_waves():
 	emit_signal("waves_over")

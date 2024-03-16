@@ -3,7 +3,7 @@ class_name Tower
 
 @onready var range_indicator = $rotation_point/Range_indicator
 
-var target
+#var target
 var disabled = true
 var attack_weight_area : Array[Rect2i] = [Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3)]
 var attack_weight_transform : Callable = func (x, _loc, _pheromones_grid): return x + 5
