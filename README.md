@@ -1,6 +1,7 @@
 # Anomaly-TD
 ### Credits
-* Open source assets used:
+You can play it here: https://cmoll24.itch.io/anomaly-farmer
+*  Open source assets used:
   * Tower assets: https://zintoki.itch.io/ground-shaker
   * Background tileset: https://opengameart.org/content/tiny-town​​
   * Enemy assets: https://foozlecc.itch.io/spire-enemy-pack-2
