@@ -6,8 +6,10 @@ func _ready():
 	highscore.text += str(GlobalVariables.get_highscore())
 
 func _on_level_1_pressed():
-	var _error = get_tree().change_scene_to_file("res://src/level1.tscn")
+	GlobalVariables.set_current_map("res://src/tilemaps/level1_terrain.tscn")
+	var _error = get_tree().change_scene_to_file("res://src/main.tscn")
 
 
 func _on_level_2_pressed():
-	var _error = get_tree().change_scene_to_file("res://src/level2.tscn")
+	GlobalVariables.set_current_map("res://src/tilemaps/level2_terrain.tscn")
+	var _error = get_tree().change_scene_to_file("res://src/main.tscn")

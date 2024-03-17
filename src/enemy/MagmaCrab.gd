@@ -2,8 +2,8 @@ extends Enemy
 
 func _ready():
 	DEFAULT_SPEED = 35
-	health = 100
-	death_deterent = 2
+	health = 150
+	death_deterent = 1
 	coin_bonus = 15
 	
 	screen_size = GlobalVariables.get_screen_size()

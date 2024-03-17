@@ -13,6 +13,8 @@ var coins :int = 0
 var starting_coins = 50
 var player_health = 20
 
+var current_map_path
+
 enum TOWERS {
 	TURRET,
 	EMITTER,
@@ -76,6 +78,9 @@ func get_player_health():
 
 func get_screen_size() -> Vector2:
 	return viewport_size
+
+func set_current_map(tile_map_path):
+	current_map_path = tile_map_path
 
 func rescale_window():
 	var screen_border = Vector2i(100,100)

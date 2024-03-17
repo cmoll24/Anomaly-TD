@@ -2,7 +2,7 @@ extends Control
 
 @onready var unit_tree : Node2D = $pausable/Ysort/creatures
 @onready var tower_tree : Node2D = $pausable/Ysort/towers
-@onready var terrain : TileMap = $pausable/Ysort/Terrain
+#@onready var terrain : TileMap = $pausable/Ysort/Terrain
 
 @onready var turret_button = $"pausable/UI/turret-button"
 @onready var emitter_button = $"pausable/UI/emitter-button"
@@ -41,7 +41,13 @@ var score = 0
 
 var game_over = false
 
+@onready var terrain_tree = $pausable/Ysort/terrain_tree
+var terrain : TileMap
+
 func _ready():
+	terrain = load(GlobalVariables.current_map_path).instantiate()
+	terrain_tree.add_child(terrain)
+	
 	enemy_path_start = Vector2(academy.position/32)
 	enemy_path_end = Vector2(-2,-2)
 	
@@ -66,6 +72,9 @@ func _ready():
 	
 	#spawn_unit(enemy_path_start*32)
 	#timer.start()
+
+#func set_tile_map(tile_map_path):
+#	terrain.tile_set.resource_path = tile_map_path
 
 func set_terrain():
 	astargrid.set_point_solid(enemy_path_start)
