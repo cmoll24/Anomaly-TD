@@ -325,6 +325,7 @@ bus = &"sfx"
 
 [node name="MusicControler" parent="." instance=ExtResource("15_78o3s")]
 
+[connection signal="remove_weight" from="pausable/UI/SidePanel" to="." method="_on_side_panel_remove_weight"]
 [connection signal="pressed" from="pausable/UI/turret-button" to="." method="_on_turretbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/laser-button" to="." method="_on_laserbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/emitter-button" to="." method="_on_emitterbutton_pressed"]

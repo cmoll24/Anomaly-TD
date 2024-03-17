@@ -6,7 +6,6 @@ class_name Tower
 #var target
 var disabled = true
 var attack_weight_area : Array[Rect2i] = [Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3)]
-var attack_weight_transform : Callable = func (x, _loc, _pheromones_grid): return x + 5
 
 var offset = Vector2(24,24)
 
@@ -16,6 +15,20 @@ var tower_type : GlobalVariables.TOWERS
 
 var side_panel
 
+func add_weight_transform(x, loc, pheromones_grid):
+	if not loc in pheromones_grid:
+		return x + 5
+	else:
+		pheromones_grid[loc][1] += 5
+		return x
+
+func remove_weight_transform(x, loc, pheromones_grid):
+	if not loc in pheromones_grid:
+		return x - 5
+	else:
+		pheromones_grid[loc][1] -= 5
+		return x
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	range_indicator.visible = true
@@ -25,7 +38,10 @@ func get_attack_weight_area():
 	return attack_weight_area[0]
 
 func get_attack_weight():
-	return attack_weight_transform
+	return add_weight_transform
+
+func get_undo_weight():
+	return remove_weight_transform
 
 func get_cost():
 	return GlobalVariables.stats[tower_type]['cost']
@@ -60,9 +76,9 @@ func _on_attack_cooldown_timeout():
 func _on_click_area_input_event(_viewport, event, _shape_idx):
 	if not disabled and event.is_action_pressed("select"):
 		range_indicator.visible = true
-		side_panel.open(tower_type)
+		side_panel.open(self)
 
-func _input(event):
+func _unhandled_input(event):
 	if not disabled and event.is_action_pressed("select"):
 		range_indicator.visible = false
 		side_panel.close()

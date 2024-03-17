@@ -9,7 +9,8 @@ func _ready():
 	attack_collision.monitoring = false
 	attack.visible = false
 	range_indicator.visible = true
-	side_panel.open(tower_type)
+	side_panel.open(self)
+	
 
 func attack_process(delta):
 	var target = null

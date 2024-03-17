@@ -27,7 +27,7 @@ var screen_size : Vector2
 var grid_screen : Rect2i #visible grid area
 var place_area : Rect2 #area where you can place turrets
 var astargrid : AStarGrid2D
-var pheromones_grid : Array[Vector2]
+var pheromones_grid : Dictionary # {loc: [number_of_emitters, actual_value]}
 var path_grid : Array[Vector2i]
 
 var enemy_path_start : Vector2
@@ -114,10 +114,19 @@ func set_nav_weight(loc : Vector2, attack_weight : Callable, attack_area : Rect2
 			var new_loc = loc + Vector2(i,j)
 			if astargrid.is_in_bounds(new_loc.x, new_loc.y):
 				var old_weight = astargrid.get_point_weight_scale(new_loc)
-				#print(pheromones_grid)
-				if new_loc not in pheromones_grid:
-					var new_weight = max(attack_weight.call(old_weight, new_loc, pheromones_grid),0)
-					astargrid.set_point_weight_scale(new_loc, new_weight)
+				var new_weight = max(attack_weight.call(old_weight, new_loc, pheromones_grid),0)
+				astargrid.set_point_weight_scale(new_loc, new_weight)
+
+func _on_side_panel_remove_weight(loc : Vector2, undo_weight : Callable, attack_area : Rect2i):
+	var pos = attack_area.position
+	var taille = attack_area.size
+	for i in range(pos.x, pos.x + taille.x):
+		for j in range(pos.y, pos.y + taille.y):
+			var new_loc = loc + Vector2(i,j)
+			if astargrid.is_in_bounds(new_loc.x, new_loc.y):
+				var old_weight = astargrid.get_point_weight_scale(new_loc)
+				var new_weight = max(undo_weight.call(old_weight, new_loc, pheromones_grid),0)
+				astargrid.set_point_weight_scale(new_loc, new_weight)
 
 func _draw():
 	'''
@@ -143,6 +152,7 @@ func _draw():
 			))
 	'''
 	
+	
 func set_color_coins(button, coins, tower_type):
 	if coins >= GlobalVariables.stats[tower_type]['cost']:
 		button.self_modulate = Color(1,1,1,1)
@@ -150,7 +160,6 @@ func set_color_coins(button, coins, tower_type):
 		button.self_modulate = Color(1,0,0,0.5)
 
 func _process(delta):
-	
 	var coins = GlobalVariables.get_coins()
 	score_label.text = 'Score: ' + str(score)
 	var time_left = round(enemy_spawner.timer.get_time_left())
@@ -165,7 +174,7 @@ func _process(delta):
 	set_color_coins(turret_button, coins, GlobalVariables.TOWERS.TURRET)
 	set_color_coins(laser_button, coins, GlobalVariables.TOWERS.LASER)
 	set_color_coins(emitter_button, coins, GlobalVariables.TOWERS.EMITTER)
-	#queue_redraw()
+	queue_redraw()
 	
 	if game_over:
 		music_controler.fade_music(delta)

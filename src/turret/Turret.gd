@@ -18,7 +18,7 @@ func _ready():
 	attack_weight_area = [Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3)]
 	attack_collision.monitoring = false
 	attack.visible = false
-	side_panel.open(tower_type)
+	side_panel.open(self)
 
 func get_attack_weight_area():
 	var direction = int(rad_to_deg(rotation_point.rotation)/90)%4
