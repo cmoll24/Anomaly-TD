@@ -46,6 +46,7 @@ var enemy_stats = {
 }
 
 var highscore = 0
+var current_score = 0
 
 signal lost_game
 
@@ -62,17 +63,26 @@ func change_coins(val):
 func get_coins():
 	return coins
 
+func reset_game_values():
+	current_score = 0
+	set_coins(starting_coins)
+	player_health = 20
+
+func add_score(val):
+	current_score += val
+
 func get_highscore():
 	return highscore
 
-func set_highscore(new_highscore):
-	highscore = new_highscore
+func update_highscore():
+	highscore = max(current_score,highscore)
 
 func damage_player(val):
 	player_health -= val
 	Engine.time_scale = 1
 	if player_health <= 0:
 		emit_signal('lost_game')
+		update_highscore()
 
 func get_player_health():
 	return player_health

@@ -86,6 +86,7 @@ func damage(d):
 					nav_agent.get_point_weight_scale(death_pos) + death_deterent
 					)
 		GlobalVariables.change_coins(coin_bonus)
+		GlobalVariables.add_score(coin_bonus)
 		queue_free()
 
 func update_health_bar():

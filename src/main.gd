@@ -13,8 +13,11 @@ extends Control
 @onready var health_label = $Overlay/Player_health
 @onready var next_wave_label = $Overlay/Next_wave
 @onready var score_label = $Overlay/Score
-@onready var game_speed_label = $Overlay/Game_speed
 @onready var academy = $pausable/Academy
+
+@onready var on_screen_buttons = $pausable/UI/on_screen
+@onready var pause_button = $pausable/UI/on_screen/pause
+@onready var play_button = $pausable/UI/on_screen/play
 
 @onready var pause_tree = $pausable
 @onready var pause_menu = $Overlay/PauseMenu
@@ -38,8 +41,6 @@ var enemy_path_end : Vector2
 var placing_turret
 
 var waves_over = false
-
-var score = 0
 
 var game_over = false
 
@@ -69,7 +70,7 @@ func _ready():
 	astargrid.update()
 	set_terrain()
 	
-	GlobalVariables.set_coins(GlobalVariables.starting_coins)
+	GlobalVariables.reset_game_values()
 	GlobalVariables.lost_game.connect(lose)
 	
 	#spawn_unit(enemy_path_start*32)
@@ -163,9 +164,17 @@ func set_color_coins(button, coins, tower_type):
 		button.self_modulate = Color(1,0,0,0.5)
 
 func _process(delta):
-	game_speed_label.text = str(Engine.time_scale) + "x"
+	on_screen_buttons.visible = placing_turret == null
+	
+	if Engine.time_scale == 0:
+		pause_button.visible = false
+		play_button.visible = true
+	else:
+		pause_button.visible = true
+		play_button.visible = false
+	
 	var coins = GlobalVariables.get_coins()
-	score_label.text = 'Score: ' + str(score)
+	score_label.text = 'Score: ' + str(GlobalVariables.current_score)
 	var time_left = round(enemy_spawner.timer.get_time_left())
 	if waves_over:
 		next_wave_label.text = 'No more waves.'
@@ -187,7 +196,7 @@ func _process(delta):
 		music_controler.set_music_level(n_units, delta)
 		if waves_over and unit_tree.get_child_count() == 0 and not game_over:
 			waves_over = false
-			score += 1
+			#score += 1
 			shop.open()
 
 #func get_random_loc():
@@ -273,7 +282,7 @@ func _on_enemy_waves_waves_over():
 func lose():
 	Engine.time_scale = 1
 	lose_audio.play()
-	GlobalVariables.set_highscore(score)
+	#GlobalVariables.update_highscore()
 	pause_tree.set_process_mode(PROCESS_MODE_DISABLED)
 	game_over = true
 
@@ -294,3 +303,15 @@ func _on_decrease_speed_pressed():
 		Engine.time_scale -= 1
 	if Engine.time_scale == 0:
 		start_wave_button.disabled = true
+
+func _on_double_fast_forward_pressed():
+	Engine.time_scale = 3
+
+func _on_fast_forward_pressed():
+	Engine.time_scale = 2
+
+func _on_play_pressed():
+	Engine.time_scale = 1
+
+func _on_pause_pressed():
+	Engine.time_scale = 0

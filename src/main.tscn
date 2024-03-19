@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://m2ue1gvxs63p"]
+[gd_scene load_steps=33 format=3 uid="uid://m2ue1gvxs63p"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_wk0i0"]
 [ext_resource type="PackedScene" uid="uid://d1gb2lemfq8te" path="res://src/ui/Shop.tscn" id="2_tmk31"]
@@ -8,8 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://dwt2v4an416yh" path="res://assets/turrets/laser-icon.png" id="6_3svw5"]
 [ext_resource type="Texture2D" uid="uid://becm4xur57mln" path="res://assets/turrets/emitter_tower.png" id="7_okdxl"]
 [ext_resource type="Texture2D" uid="uid://bj47t5cjp680c" path="res://assets/ui/fast-forward.png" id="8_kmlqa"]
+[ext_resource type="Texture2D" uid="uid://b303ag41j6eib" path="res://assets/ui/triple-fast-forward.png" id="9_f0o32"]
 [ext_resource type="Texture2D" uid="uid://cgx7helht35d2" path="res://assets/turrets/turret_01_mk2-64x64.png" id="9_jhd1e"]
+[ext_resource type="Texture2D" uid="uid://d2ft8e6vrqkds" path="res://assets/ui/play.png" id="10_6iouq"]
 [ext_resource type="Texture2D" uid="uid://kng106ig0jso" path="res://assets/turrets/weapons48x48.png" id="10_gbr04"]
+[ext_resource type="Texture2D" uid="uid://dxrnl0hlhm287" path="res://assets/ui/pause.png" id="11_gu0w1"]
 [ext_resource type="PackedScene" uid="uid://dhodcrhes1jot" path="res://src/turret/Academy.tscn" id="11_t6u00"]
 [ext_resource type="PackedScene" uid="uid://cl1or2k7di0ma" path="res://src/EnemyWaves.tscn" id="12_ypfkr"]
 [ext_resource type="AudioStream" uid="uid://d2so0k0m2212f" path="res://assets/sounds/place.wav" id="13_v7hrv"]
@@ -150,15 +153,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-
-[node name="Game_speed" type="Label" parent="Overlay"]
-layout_mode = 0
-offset_left = 690.0
-offset_top = 2.0
-offset_right = 806.0
-offset_bottom = 25.0
-scale = Vector2(0.9, 0.9)
-text = "1x"
 
 [node name="Player_health" type="Label" parent="Overlay"]
 layout_mode = 0
@@ -301,22 +295,43 @@ offset_right = 454.0
 offset_bottom = 29.0
 text = "Start next Wave"
 
-[node name="increase_speed" type="Button" parent="pausable/UI"]
+[node name="on_screen" type="Control" parent="pausable/UI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="fast_forward" type="Button" parent="pausable/UI/on_screen"]
+layout_mode = 0
+offset_left = 715.0
+offset_top = -390.0
+offset_right = 739.0
+offset_bottom = -366.0
+icon = ExtResource("8_kmlqa")
+
+[node name="double_fast_forward" type="Button" parent="pausable/UI/on_screen"]
 layout_mode = 0
 offset_left = 741.0
 offset_top = -390.0
 offset_right = 765.0
 offset_bottom = -366.0
-icon = ExtResource("8_kmlqa")
+icon = ExtResource("9_f0o32")
 
-[node name="decrease_speed" type="Button" parent="pausable/UI"]
+[node name="play" type="Button" parent="pausable/UI/on_screen"]
+visible = false
 layout_mode = 0
-offset_left = 737.0
+offset_left = 689.0
 offset_top = -390.0
-offset_right = 761.0
+offset_right = 713.0
 offset_bottom = -366.0
-scale = Vector2(-1, 1)
-icon = ExtResource("8_kmlqa")
+icon = ExtResource("10_6iouq")
+
+[node name="pause" type="Button" parent="pausable/UI/on_screen"]
+layout_mode = 0
+offset_left = 689.0
+offset_top = -390.0
+offset_right = 713.0
+offset_bottom = -366.0
+icon = ExtResource("11_gu0w1")
 
 [node name="Ysort" type="Node2D" parent="pausable"]
 y_sort_enabled = true
@@ -367,8 +382,10 @@ bus = &"music"
 [connection signal="pressed" from="pausable/UI/laser-button" to="." method="_on_laserbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/emitter-button" to="." method="_on_emitterbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/start_wave" to="." method="_on_start_wave_pressed"]
-[connection signal="pressed" from="pausable/UI/increase_speed" to="." method="_on_increase_speed_pressed"]
-[connection signal="pressed" from="pausable/UI/decrease_speed" to="." method="_on_decrease_speed_pressed"]
+[connection signal="pressed" from="pausable/UI/on_screen/fast_forward" to="." method="_on_fast_forward_pressed"]
+[connection signal="pressed" from="pausable/UI/on_screen/double_fast_forward" to="." method="_on_double_fast_forward_pressed"]
+[connection signal="pressed" from="pausable/UI/on_screen/play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="pausable/UI/on_screen/pause" to="." method="_on_pause_pressed"]
 [connection signal="spawn_wave" from="pausable/EnemyWaves" to="." method="_on_enemy_waves_spawn_wave"]
 [connection signal="waves_over" from="pausable/EnemyWaves" to="." method="_on_enemy_waves_waves_over"]
 [connection signal="finished" from="lose_audio" to="." method="_on_lose_audio_finished"]
