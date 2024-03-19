@@ -79,6 +79,6 @@ func _on_click_area_input_event(_viewport, event, _shape_idx):
 		side_panel.open(self)
 
 func _unhandled_input(event):
-	if not disabled and event.is_action_pressed("select"):
+	if not disabled and event.is_action_pressed("select") or event.is_action_pressed("clear_selection"):
 		range_indicator.visible = false
 		side_panel.close()

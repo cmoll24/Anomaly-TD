@@ -93,7 +93,7 @@ func update_health_bar():
 	health_bar.size.x = new_size
 	health_bar.position.x = -new_size/2
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	velocity.x = 0
 	velocity.y = 0
 	
@@ -108,7 +108,17 @@ func _physics_process(_delta):
 		GlobalVariables.damage_player(1)
 		queue_free()
 		return
-	var direction = (next_pos-position).floor()
+		
+	var direction = next_pos-position
+	var delta_range = DEFAULT_SPEED * speed_mult * delta
+	
+	if abs(direction.x) <= delta_range:
+		position.x = next_pos.x
+		direction = next_pos-position
+	elif abs(direction.y) <= delta_range:
+		position.y = next_pos.y
+		direction = next_pos-position
+	
 	if direction.x > 0:
 		velocity.x = DEFAULT_SPEED * speed_mult
 		anim_sprite.play('left')

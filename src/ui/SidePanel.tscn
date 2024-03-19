@@ -8,7 +8,7 @@ anchor_right = 0.195
 anchor_bottom = 0.579
 offset_right = 0.23999
 offset_bottom = -0.128021
-mouse_filter = 1
+mouse_filter = 2
 script = ExtResource("1_0d18g")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -18,7 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 mouse_force_pass_scroll_events = false
 color = Color(0.788235, 0.333333, 0.180392, 0.603922)
 
@@ -34,6 +34,7 @@ offset_right = -17.0
 offset_bottom = 39.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="name" type="Label" parent="VBoxContainer"]
 layout_mode = 2

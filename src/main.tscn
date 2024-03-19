@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://m2ue1gvxs63p"]
+[gd_scene load_steps=30 format=3 uid="uid://m2ue1gvxs63p"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_wk0i0"]
 [ext_resource type="PackedScene" uid="uid://d1gb2lemfq8te" path="res://src/ui/Shop.tscn" id="2_tmk31"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dcse3qyvm7yx5" path="res://assets/turrets/turret-icon.png" id="5_r2n2u"]
 [ext_resource type="Texture2D" uid="uid://dwt2v4an416yh" path="res://assets/turrets/laser-icon.png" id="6_3svw5"]
 [ext_resource type="Texture2D" uid="uid://becm4xur57mln" path="res://assets/turrets/emitter_tower.png" id="7_okdxl"]
+[ext_resource type="Texture2D" uid="uid://bj47t5cjp680c" path="res://assets/ui/fast-forward.png" id="8_kmlqa"]
 [ext_resource type="Texture2D" uid="uid://cgx7helht35d2" path="res://assets/turrets/turret_01_mk2-64x64.png" id="9_jhd1e"]
 [ext_resource type="Texture2D" uid="uid://kng106ig0jso" path="res://assets/turrets/weapons48x48.png" id="10_gbr04"]
 [ext_resource type="PackedScene" uid="uid://dhodcrhes1jot" path="res://src/turret/Academy.tscn" id="11_t6u00"]
@@ -150,10 +151,20 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
+[node name="Game_speed" type="Label" parent="Overlay"]
+layout_mode = 0
+offset_left = 690.0
+offset_top = 2.0
+offset_right = 806.0
+offset_bottom = 25.0
+scale = Vector2(0.9, 0.9)
+text = "1x"
+
 [node name="Player_health" type="Label" parent="Overlay"]
 layout_mode = 0
+offset_top = 16.0
 offset_right = 57.0
-offset_bottom = 23.0
+offset_bottom = 39.0
 scale = Vector2(0.9, 0.9)
 text = "Health:"
 
@@ -172,17 +183,17 @@ enemy_spawner = NodePath("../../pausable/EnemyWaves")
 
 [node name="Coins" type="Label" parent="Overlay"]
 layout_mode = 0
-offset_top = 17.0
+offset_top = 33.0
 offset_right = 57.0
-offset_bottom = 40.0
+offset_bottom = 56.0
 scale = Vector2(0.9, 0.9)
 text = "Coins:"
 
 [node name="Score" type="Label" parent="Overlay"]
 layout_mode = 0
-offset_top = 33.0
+offset_top = 49.0
 offset_right = 57.0
-offset_bottom = 56.0
+offset_bottom = 72.0
 scale = Vector2(0.9, 0.9)
 text = "Score:"
 
@@ -273,6 +284,15 @@ text = "(left click) to place tower
 (r) to rotate tower
 (right click) to clear selection"
 
+[node name="Label3" type="Label" parent="pausable/UI"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -392.0
+offset_right = 107.0
+offset_bottom = -369.0
+scale = Vector2(0.75, 0.75)
+text = "(Esc) for settings"
+
 [node name="start_wave" type="Button" parent="pausable/UI"]
 layout_mode = 0
 offset_left = 323.0
@@ -280,6 +300,23 @@ offset_top = -2.0
 offset_right = 454.0
 offset_bottom = 29.0
 text = "Start next Wave"
+
+[node name="increase_speed" type="Button" parent="pausable/UI"]
+layout_mode = 0
+offset_left = 741.0
+offset_top = -390.0
+offset_right = 765.0
+offset_bottom = -366.0
+icon = ExtResource("8_kmlqa")
+
+[node name="decrease_speed" type="Button" parent="pausable/UI"]
+layout_mode = 0
+offset_left = 737.0
+offset_top = -390.0
+offset_right = 761.0
+offset_bottom = -366.0
+scale = Vector2(-1, 1)
+icon = ExtResource("8_kmlqa")
 
 [node name="Ysort" type="Node2D" parent="pausable"]
 y_sort_enabled = true
@@ -321,7 +358,7 @@ bus = &"sfx"
 
 [node name="lose_audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("14_08l56")
-bus = &"sfx"
+bus = &"music"
 
 [node name="MusicControler" parent="." instance=ExtResource("15_78o3s")]
 
@@ -330,6 +367,8 @@ bus = &"sfx"
 [connection signal="pressed" from="pausable/UI/laser-button" to="." method="_on_laserbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/emitter-button" to="." method="_on_emitterbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/start_wave" to="." method="_on_start_wave_pressed"]
+[connection signal="pressed" from="pausable/UI/increase_speed" to="." method="_on_increase_speed_pressed"]
+[connection signal="pressed" from="pausable/UI/decrease_speed" to="." method="_on_decrease_speed_pressed"]
 [connection signal="spawn_wave" from="pausable/EnemyWaves" to="." method="_on_enemy_waves_spawn_wave"]
 [connection signal="waves_over" from="pausable/EnemyWaves" to="." method="_on_enemy_waves_waves_over"]
 [connection signal="finished" from="lose_audio" to="." method="_on_lose_audio_finished"]

@@ -9,7 +9,7 @@ var aspect_ratio = Vector2i(16,9)
 var viewport_size : Vector2
 var GRID_CELL_SIZE = Vector2i(32,32)
 
-var coins :int = 0
+var coins : int = 0
 var starting_coins = 50
 var player_health = 20
 
@@ -70,6 +70,7 @@ func set_highscore(new_highscore):
 
 func damage_player(val):
 	player_health -= val
+	Engine.time_scale = 1
 	if player_health <= 0:
 		emit_signal('lost_game')
 

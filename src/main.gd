@@ -7,11 +7,13 @@ extends Control
 @onready var turret_button = $"pausable/UI/turret-button"
 @onready var emitter_button = $"pausable/UI/emitter-button"
 @onready var laser_button = $"pausable/UI/laser-button"
+@onready var start_wave_button = $pausable/UI/start_wave
 
 @onready var coins_label = $Overlay/Coins
 @onready var health_label = $Overlay/Player_health
 @onready var next_wave_label = $Overlay/Next_wave
 @onready var score_label = $Overlay/Score
+@onready var game_speed_label = $Overlay/Game_speed
 @onready var academy = $pausable/Academy
 
 @onready var pause_tree = $pausable
@@ -118,6 +120,7 @@ func set_nav_weight(loc : Vector2, attack_weight : Callable, attack_area : Rect2
 				astargrid.set_point_weight_scale(new_loc, new_weight)
 
 func _on_side_panel_remove_weight(loc : Vector2, undo_weight : Callable, attack_area : Rect2i):
+	astargrid.set_point_solid(loc, false)
 	var pos = attack_area.position
 	var taille = attack_area.size
 	for i in range(pos.x, pos.x + taille.x):
@@ -160,6 +163,7 @@ func set_color_coins(button, coins, tower_type):
 		button.self_modulate = Color(1,0,0,0.5)
 
 func _process(delta):
+	game_speed_label.text = str(Engine.time_scale) + "x"
 	var coins = GlobalVariables.get_coins()
 	score_label.text = 'Score: ' + str(score)
 	var time_left = round(enemy_spawner.timer.get_time_left())
@@ -267,6 +271,7 @@ func _on_enemy_waves_waves_over():
 @onready var lose_audio = $lose_audio
 
 func lose():
+	Engine.time_scale = 1
 	lose_audio.play()
 	GlobalVariables.set_highscore(score)
 	pause_tree.set_process_mode(PROCESS_MODE_DISABLED)
@@ -277,3 +282,15 @@ func _on_start_wave_pressed():
 
 func _on_lose_audio_finished():
 	var _error = get_tree().change_scene_to_file("res://src/title.tscn")
+
+func _on_increase_speed_pressed():
+	if Engine.time_scale == 0:
+		start_wave_button.disabled = false
+	if Engine.time_scale < 3:
+		Engine.time_scale += 1
+
+func _on_decrease_speed_pressed():
+	if Engine.time_scale > 0:
+		Engine.time_scale -= 1
+	if Engine.time_scale == 0:
+		start_wave_button.disabled = true
