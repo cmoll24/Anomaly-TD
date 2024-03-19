@@ -285,7 +285,7 @@ offset_top = -392.0
 offset_right = 107.0
 offset_bottom = -369.0
 scale = Vector2(0.75, 0.75)
-text = "(Esc) for settings"
+text = "(Esc or Q) for settings"
 
 [node name="start_wave" type="Button" parent="pausable/UI"]
 layout_mode = 0
@@ -299,6 +299,15 @@ text = "Start next Wave"
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="Game_speed" type="Label" parent="pausable/UI/on_screen"]
+layout_mode = 0
+offset_left = 666.0
+offset_top = -388.0
+offset_right = 723.0
+offset_bottom = -365.0
+scale = Vector2(0.9, 0.9)
+text = "1x"
 
 [node name="fast_forward" type="Button" parent="pausable/UI/on_screen"]
 layout_mode = 0
@@ -318,6 +327,7 @@ icon = ExtResource("9_f0o32")
 
 [node name="play" type="Button" parent="pausable/UI/on_screen"]
 visible = false
+self_modulate = Color(0, 0, 20, 1)
 layout_mode = 0
 offset_left = 689.0
 offset_top = -390.0

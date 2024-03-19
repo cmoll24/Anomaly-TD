@@ -85,6 +85,9 @@ size_flags_vertical = 0
 text = "Beetle (50)"
 icon = ExtResource("5_nw24p")
 
+[node name="EnemyMultipler" type="OptionButton" parent="VBoxContainer/Eggs"]
+layout_mode = 2
+
 [node name="Upgrade_label" type="Label" parent="VBoxContainer"]
 visible = false
 layout_mode = 2

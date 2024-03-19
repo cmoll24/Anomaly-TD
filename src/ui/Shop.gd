@@ -2,12 +2,19 @@ extends Control
 
 @export var enemy_spawner : EnemyWaves
 @onready var waves_txt = $VBoxContainer/Waves
+@onready var enemy_multipler = $VBoxContainer/Eggs/EnemyMultipler
+
+var multipliers = [1,5,10,25,50,100]
 
 func _ready():
 	visible = false
+	for x in multipliers:
+		enemy_multipler.add_item("x" + str(x))
+	enemy_multipler.selected = 0
 
 func open():
 	visible = true
+	enemy_multipler.selected = 0
 	update_waves()
 	#resume_button.grab_focus()
 
@@ -29,11 +36,12 @@ func update_waves():
 #Eggs
 
 func add_enemy(enemy_type):
-	var cost = GlobalVariables.enemy_stats[enemy_type]['cost']
-	if GlobalVariables.get_coins() >= cost:
-		GlobalVariables.change_coins(-cost)
-		enemy_spawner.add_wave(enemy_type)
-		update_waves()
+	for i in multipliers[enemy_multipler.get_selected_id()]:
+		var cost = GlobalVariables.enemy_stats[enemy_type]['cost']
+		if GlobalVariables.get_coins() >= cost:
+			GlobalVariables.change_coins(-cost)
+			enemy_spawner.add_wave(enemy_type)
+			update_waves()
 
 func _on_larva_pressed():
 	add_enemy(GlobalVariables.ENEMIES.LARVA)
@@ -46,3 +54,4 @@ func _on_roach_pressed():
 
 func _on_beetle_pressed():
 	add_enemy(GlobalVariables.ENEMIES.BEETLE)
+

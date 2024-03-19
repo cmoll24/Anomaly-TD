@@ -24,7 +24,6 @@ func open():
 func close():
 	visible = false
 	pause_tree.set_process_mode(PROCESS_MODE_INHERIT)
-	print(pause_tree.get_process_mode())
 
 func _on_resume_pressed():
 	emit_signal("resume")

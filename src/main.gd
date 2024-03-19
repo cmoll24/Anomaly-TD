@@ -9,6 +9,7 @@ extends Control
 @onready var laser_button = $"pausable/UI/laser-button"
 @onready var start_wave_button = $pausable/UI/start_wave
 
+@onready var game_speed_label = $pausable/UI/on_screen/Game_speed
 @onready var coins_label = $Overlay/Coins
 @onready var health_label = $Overlay/Player_health
 @onready var next_wave_label = $Overlay/Next_wave
@@ -166,6 +167,7 @@ func set_color_coins(button, coins, tower_type):
 func _process(delta):
 	on_screen_buttons.visible = placing_turret == null
 	
+	game_speed_label.text = str(Engine.time_scale) + "x"
 	if Engine.time_scale == 0:
 		pause_button.visible = false
 		play_button.visible = true
@@ -243,10 +245,12 @@ func update_enemy_pathing():
 		if child is Enemy:
 			child.start_navigation(create_navpath(child.position))
 
-func _unhandled_input(event):
+func _input(event):
 	if event.is_action_pressed("clear_selection") and placing_turret:
 		placing_turret.free()
-	elif event.is_action_pressed("click") and placing_turret != null:
+
+func _unhandled_input(event):
+	if event.is_action_pressed("click") and placing_turret != null:
 		var mouse_pos = get_global_mouse_position()
 		if place_area.has_point(mouse_pos) and GlobalVariables.get_coins() >= GlobalVariables.stats[placing_turret.tower_type]['cost']:
 			place_turret(placing_turret, mouse_pos)
