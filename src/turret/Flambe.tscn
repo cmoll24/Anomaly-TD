@@ -1,10 +1,11 @@
-[gd_scene load_steps=23 format=3 uid="uid://bu47w0hvo7qih"]
+[gd_scene load_steps=12 format=3 uid="uid://bu47w0hvo7qih"]
 
 [ext_resource type="Script" path="res://src/turret/Flambe.gd" id="1_6rtp6"]
 [ext_resource type="Texture2D" uid="uid://dbhqkcqsuegyc" path="res://assets/turrets/bigger_base.png" id="2_pr3cd"]
 [ext_resource type="Texture2D" uid="uid://j2aofuxsi08k" path="res://assets/turrets/laser-attack.png" id="3_1ob5i"]
-[ext_resource type="Texture2D" uid="uid://buqlr51aijn47" path="res://assets/turrets/laser_01_46x46.png" id="4_fk56t"]
-[ext_resource type="AudioStream" uid="uid://bxuw1vq81tfci" path="res://assets/sounds/laser4.wav" id="5_jxdir"]
+[ext_resource type="Material" uid="uid://wif2d4hirbuq" path="res://assets/turrets/Flambe.tres" id="4_bjupj"]
+[ext_resource type="Texture2D" uid="uid://dpvwb24w065f8" path="res://assets/turrets/flambe2_48x48.png" id="4_tgosa"]
+[ext_resource type="AudioStream" uid="uid://brpd1q10vauci" path="res://assets/sounds/flambe2.wav" id="6_ndeme"]
 
 [sub_resource type="Gradient" id="Gradient_rg74k"]
 offsets = PackedFloat32Array(1)
@@ -15,97 +16,16 @@ gradient = SubResource("Gradient_rg74k")
 width = 32
 height = 32
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ax7tg"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(0, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ha2fi"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(46, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1j0js"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(92, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3r7ch"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(138, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_11xyl"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(184, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ino62"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(230, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wvlbm"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(276, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o7gyo"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(322, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_c6hof"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(368, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_io8dx"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(414, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4nm83"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(460, 0, 46, 46)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2ig4p"]
-atlas = ExtResource("4_fk56t")
-region = Rect2(0, 0, 46, 46)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_0gv60"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ax7tg")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ha2fi")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1j0js")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3r7ch")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_11xyl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ino62")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wvlbm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o7gyo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_c6hof")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_io8dx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4nm83")
-}],
+"frames": [],
 "loop": false,
 "name": &"attack1",
 "speed": 25.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2ig4p")
+"texture": ExtResource("4_tgosa")
 }],
 "loop": true,
 "name": &"idle",
@@ -139,6 +59,7 @@ texture = ExtResource("2_pr3cd")
 z_index = 1
 
 [node name="attack" type="TextureRect" parent="rotation_point/gun_rotation"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -153,10 +74,31 @@ expand_mode = 1
 stretch_mode = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="FlameParticlesLeft" type="GPUParticles2D" parent="rotation_point/gun_rotation"]
+position = Vector2(-10, -9)
+rotation = -1.5708
+emitting = false
+amount = 500
+process_material = ExtResource("4_bjupj")
+lifetime = 0.4
+one_shot = true
+speed_scale = 1.5
+
+[node name="FlameParticlesRight" type="GPUParticles2D" parent="rotation_point/gun_rotation"]
+position = Vector2(10, -9)
+rotation = -1.5708
+emitting = false
+amount = 500
+process_material = ExtResource("4_bjupj")
+lifetime = 0.4
+one_shot = true
+speed_scale = 1.5
+
 [node name="Gun" type="AnimatedSprite2D" parent="rotation_point/gun_rotation"]
 sprite_frames = SubResource("SpriteFrames_0gv60")
 animation = &"idle"
 autoplay = "idle"
+frame_progress = 0.350872
 
 [node name="attack_collision" type="Area2D" parent="rotation_point"]
 
@@ -173,7 +115,7 @@ shape = SubResource("RectangleShape2D_5pa0j")
 wait_time = 4.0
 
 [node name="attack_audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_jxdir")
+stream = ExtResource("6_ndeme")
 bus = &"sfx"
 
 [connection signal="body_entered" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_entered"]

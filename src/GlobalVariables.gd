@@ -10,7 +10,7 @@ var viewport_size : Vector2
 var GRID_CELL_SIZE = Vector2i(32,32)
 
 var coins : int = 0
-var starting_coins = 500000
+var starting_coins = 50
 var player_health = 20
 
 var current_map_path
@@ -31,13 +31,13 @@ enum ENEMIES {
 
 var stats = {
 	TOWERS.TURRET : {'path' : "res://src/turret/Turret.tscn", 'cost' : 15, 'name' : 'Turret', 
-	'description' : "Basic turret shoots at one enemy at a time.\n\nDeals 3 damage and fires 6 times per second"},
+	'description' : "Basic turret shoots at one enemy at a time.\n\nDeals 5 damage and fires once per second"},
 	TOWERS.EMITTER : {'path' : "res://src/turret/Emitter.tscn", 'cost' : 10, 'name' : 'Emitter',
 	'description' : "Pheromone emitter attracts bugs towards it's area."},
 	TOWERS.LASER : {'path' : "res://src/turret/Laser.tscn", 'cost' : 30, 'name' : 'Laser',
 	'description' : "Powerful laser that deals damage over time in a straight line to one target.\n\nDeals 150 damage over 10s and cools down for 5s"},
-	TOWERS.FLAMBE : {'path' : "res://src/turret/Flambe.tscn", 'cost' : 1, 'name' : 'Flambé',
-	'description' : "Flambé those bugs!"}
+	TOWERS.FLAMBE : {'path' : "res://src/turret/Flambe.tscn", 'cost' : 75, 'name' : 'Flambé',
+	'description' : "Flamethrower that deals splash damage to 10 enemies in range.\n\nDeals 10 damage to 10 enemy and cools down for 4s"}
 	
 	}
 

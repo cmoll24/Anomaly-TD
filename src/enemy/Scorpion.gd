@@ -2,7 +2,7 @@ extends Enemy
 
 func _ready():
 	DEFAULT_SPEED = 20
-	health = 100
+	health = 150
 	death_deterent = 1
 	coin_bonus = 10
 	

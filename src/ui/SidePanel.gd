@@ -13,6 +13,8 @@ func _ready():
 	sell_button.visible = false
 
 func open(tower : Tower):#tower_type : GlobalVariables.TOWERS):
+	if current_tower and is_instance_valid(current_tower):
+		current_tower.range_indicator.visible = false
 	close()
 	visible = true
 	current_tower = tower

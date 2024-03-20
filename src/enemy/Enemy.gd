@@ -90,7 +90,7 @@ func damage(d):
 		queue_free()
 
 func update_health_bar():
-	var new_size = 3 * round(health/10)
+	var new_size = 3 * round(health/20)
 	health_bar.size.x = new_size
 	health_bar.position.x = -new_size/2
 

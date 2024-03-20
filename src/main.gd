@@ -7,6 +7,7 @@ extends Control
 @onready var turret_button = $"pausable/UI/turret-button"
 @onready var emitter_button = $"pausable/UI/emitter-button"
 @onready var laser_button = $"pausable/UI/laser-button"
+@onready var flambe_button = $"pausable/UI/flambe-button"
 @onready var start_wave_button = $pausable/UI/start_wave
 
 @onready var game_speed_label = $pausable/UI/on_screen/Game_speed
@@ -171,9 +172,11 @@ func _process(delta):
 	if Engine.time_scale == 0:
 		pause_button.visible = false
 		play_button.visible = true
+		start_wave_button.disabled = true
 	else:
 		pause_button.visible = true
 		play_button.visible = false
+		start_wave_button.disabled = false
 	
 	var coins = GlobalVariables.get_coins()
 	score_label.text = 'Score: ' + str(GlobalVariables.current_score)
@@ -189,6 +192,7 @@ func _process(delta):
 	set_color_coins(turret_button, coins, GlobalVariables.TOWERS.TURRET)
 	set_color_coins(laser_button, coins, GlobalVariables.TOWERS.LASER)
 	set_color_coins(emitter_button, coins, GlobalVariables.TOWERS.EMITTER)
+	set_color_coins(flambe_button, coins, GlobalVariables.TOWERS.FLAMBE)
 	queue_redraw()
 	
 	if game_over:
@@ -200,16 +204,6 @@ func _process(delta):
 			waves_over = false
 			#score += 1
 			shop.open()
-
-#func get_random_loc():
-#	return Vector2(randi_range(1,screen_size.x),
-#				   randi_range(1,screen_size.y))
-
-#func _on_timer_timeout():
-#	spawn_unit(enemy_path_start*32)#get_random_loc())#Vector2(screen_size.x/2,screen_size.y/2))
-#	var new_time = 5#lerp(timer.wait_time,1.0,0.01)
-#	#print(new_time)
-#	timer.start(new_time)
 
 func spawn_unit(enemy_type : GlobalVariables.ENEMIES, pos):
 	var enemy
@@ -298,18 +292,6 @@ func _on_start_wave_pressed():
 
 func _on_lose_audio_finished():
 	var _error = get_tree().change_scene_to_file("res://src/title.tscn")
-
-func _on_increase_speed_pressed():
-	if Engine.time_scale == 0:
-		start_wave_button.disabled = false
-	if Engine.time_scale < 3:
-		Engine.time_scale += 1
-
-func _on_decrease_speed_pressed():
-	if Engine.time_scale > 0:
-		Engine.time_scale -= 1
-	if Engine.time_scale == 0:
-		start_wave_button.disabled = true
 
 func _on_double_fast_forward_pressed():
 	Engine.time_scale = 3

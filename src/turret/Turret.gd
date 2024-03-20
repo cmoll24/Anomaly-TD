@@ -9,7 +9,7 @@ class_name Turret
 @onready var gun_anim = $rotation_point/gun_rotation/Gun
 @onready var attack_audio = $attack_audio
 
-var damage = 3
+var damage = 5
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -57,10 +57,6 @@ func attack_process(delta):
 			gun_anim.play("attack1")
 			attack_audio.play()
 			can_attack = false
-		else:
-			attack.visible = false
-	else:
-		attack.visible = false
 
 func rotate_turret():
 	rotation_point.rotation += deg_to_rad(90)

@@ -1,13 +1,14 @@
-[gd_scene load_steps=33 format=3 uid="uid://m2ue1gvxs63p"]
+[gd_scene load_steps=34 format=3 uid="uid://m2ue1gvxs63p"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_wk0i0"]
 [ext_resource type="PackedScene" uid="uid://d1gb2lemfq8te" path="res://src/ui/Shop.tscn" id="2_tmk31"]
 [ext_resource type="PackedScene" uid="uid://csfyhc8jt8ksq" path="res://src/ui/PauseMenu.tscn" id="3_rwwsn"]
 [ext_resource type="PackedScene" uid="uid://d4cpl220fkdrl" path="res://src/ui/SidePanel.tscn" id="4_r4bre"]
-[ext_resource type="Texture2D" uid="uid://dcse3qyvm7yx5" path="res://assets/turrets/turret-icon.png" id="5_r2n2u"]
-[ext_resource type="Texture2D" uid="uid://dwt2v4an416yh" path="res://assets/turrets/laser-icon.png" id="6_3svw5"]
+[ext_resource type="Texture2D" uid="uid://bixr4xko2f0um" path="res://assets/turrets/turret-icon-shop.png" id="5_n2pqa"]
+[ext_resource type="Texture2D" uid="uid://7n1xb8x76u4y" path="res://assets/turrets/laser-icon-shop.png" id="6_ifrmf"]
 [ext_resource type="Texture2D" uid="uid://becm4xur57mln" path="res://assets/turrets/emitter_tower.png" id="7_okdxl"]
 [ext_resource type="Texture2D" uid="uid://bj47t5cjp680c" path="res://assets/ui/fast-forward.png" id="8_kmlqa"]
+[ext_resource type="Texture2D" uid="uid://okk5jaow67v" path="res://assets/turrets/flambe-icon-shop.png" id="8_q2i8s"]
 [ext_resource type="Texture2D" uid="uid://b303ag41j6eib" path="res://assets/ui/triple-fast-forward.png" id="9_f0o32"]
 [ext_resource type="Texture2D" uid="uid://cgx7helht35d2" path="res://assets/turrets/turret_01_mk2-64x64.png" id="9_jhd1e"]
 [ext_resource type="Texture2D" uid="uid://d2ft8e6vrqkds" path="res://assets/ui/play.png" id="10_6iouq"]
@@ -239,41 +240,40 @@ color = Color(0.447059, 0.592157, 0.654902, 1)
 
 [node name="turret-button" type="Button" parent="pausable/UI"]
 layout_mode = 0
-offset_left = 645.0
-offset_right = 686.0
+offset_left = 644.0
+offset_right = 684.0
 offset_bottom = 40.0
-icon = ExtResource("5_r2n2u")
+icon = ExtResource("5_n2pqa")
 
 [node name="laser-button" type="Button" parent="pausable/UI"]
 layout_mode = 0
-offset_left = 687.0
-offset_right = 727.0
+offset_left = 686.0
+offset_right = 726.0
 offset_bottom = 40.0
-icon = ExtResource("6_3svw5")
+icon = ExtResource("6_ifrmf")
 
 [node name="emitter-button" type="Button" parent="pausable/UI"]
 layout_mode = 0
-offset_left = 604.0
-offset_right = 644.0
+offset_left = 602.0
+offset_right = 642.0
 offset_bottom = 40.0
 icon = ExtResource("7_okdxl")
 
 [node name="flambe-button" type="Button" parent="pausable/UI"]
-self_modulate = Color(0, 0, 1, 1)
 layout_mode = 0
 offset_left = 728.0
 offset_right = 768.0
 offset_bottom = 40.0
-icon = ExtResource("6_3svw5")
+icon = ExtResource("8_q2i8s")
 
 [node name="Label2" type="Label" parent="pausable/UI"]
 layout_mode = 0
 offset_left = 564.0
-offset_top = -15.0
-offset_right = 799.0
-offset_bottom = 34.0
+offset_top = -17.0
+offset_right = 826.0
+offset_bottom = 32.0
 scale = Vector2(0.75, 0.75)
-text = "Cost:       10         15          30        75"
+text = "Cost:       10         15         30         75"
 
 [node name="Label" type="Label" parent="pausable/UI"]
 layout_mode = 0
