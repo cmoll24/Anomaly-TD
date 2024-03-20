@@ -203,6 +203,8 @@ func _process(delta):
 		if waves_over and unit_tree.get_child_count() == 0 and not game_over:
 			waves_over = false
 			#score += 1
+			#if is_instance_valid(placing_turret):
+			#	placing_turret.delete_tower()
 			shop.open()
 
 func spawn_unit(enemy_type : GlobalVariables.ENEMIES, pos):
@@ -241,7 +243,7 @@ func update_enemy_pathing():
 
 func _input(event):
 	if event.is_action_pressed("clear_selection") and placing_turret:
-		placing_turret.free()
+		placing_turret.delete_tower()
 
 func _unhandled_input(event):
 	if event.is_action_pressed("click") and placing_turret != null:

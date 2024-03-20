@@ -36,7 +36,7 @@ func calculate_closest_target():
 	for x in attack_collision.get_overlapping_bodies():
 		if x is Enemy:
 			if closest_target and is_instance_valid(closest_target):
-				if position.distance_squared_to(x.global_position) < position.distance_squared_to(closest_target.global_position):
+				if global_position.distance_squared_to(x.global_position) < global_position.distance_squared_to(closest_target.global_position):
 					closest_target = x
 			else:
 				closest_target = x

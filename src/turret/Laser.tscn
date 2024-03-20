@@ -175,6 +175,7 @@ wait_time = 10.0
 
 [node name="attack_audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_5o65b")
+volume_db = -2.0
 bus = &"sfx"
 
 [connection signal="body_entered" from="rotation_point/attack_collision" to="." method="_on_attack_collision_body_entered"]
