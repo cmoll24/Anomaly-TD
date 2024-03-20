@@ -239,33 +239,41 @@ color = Color(0.447059, 0.592157, 0.654902, 1)
 
 [node name="turret-button" type="Button" parent="pausable/UI"]
 layout_mode = 0
-offset_left = 686.0
-offset_right = 727.0
+offset_left = 645.0
+offset_right = 686.0
 offset_bottom = 40.0
 icon = ExtResource("5_r2n2u")
 
 [node name="laser-button" type="Button" parent="pausable/UI"]
+layout_mode = 0
+offset_left = 687.0
+offset_right = 727.0
+offset_bottom = 40.0
+icon = ExtResource("6_3svw5")
+
+[node name="emitter-button" type="Button" parent="pausable/UI"]
+layout_mode = 0
+offset_left = 604.0
+offset_right = 644.0
+offset_bottom = 40.0
+icon = ExtResource("7_okdxl")
+
+[node name="flambe-button" type="Button" parent="pausable/UI"]
+self_modulate = Color(0, 0, 1, 1)
 layout_mode = 0
 offset_left = 728.0
 offset_right = 768.0
 offset_bottom = 40.0
 icon = ExtResource("6_3svw5")
 
-[node name="emitter-button" type="Button" parent="pausable/UI"]
-layout_mode = 0
-offset_left = 645.0
-offset_right = 685.0
-offset_bottom = 40.0
-icon = ExtResource("7_okdxl")
-
 [node name="Label2" type="Label" parent="pausable/UI"]
 layout_mode = 0
-offset_left = 604.0
+offset_left = 564.0
 offset_top = -15.0
-offset_right = 839.0
+offset_right = 799.0
 offset_bottom = 34.0
 scale = Vector2(0.75, 0.75)
-text = "Cost:       10         15          30"
+text = "Cost:       10         15          30        75"
 
 [node name="Label" type="Label" parent="pausable/UI"]
 layout_mode = 0
@@ -391,6 +399,7 @@ bus = &"music"
 [connection signal="pressed" from="pausable/UI/turret-button" to="." method="_on_turretbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/laser-button" to="." method="_on_laserbutton_pressed"]
 [connection signal="pressed" from="pausable/UI/emitter-button" to="." method="_on_emitterbutton_pressed"]
+[connection signal="pressed" from="pausable/UI/flambe-button" to="." method="_on_flambebutton_pressed"]
 [connection signal="pressed" from="pausable/UI/start_wave" to="." method="_on_start_wave_pressed"]
 [connection signal="pressed" from="pausable/UI/on_screen/fast_forward" to="." method="_on_fast_forward_pressed"]
 [connection signal="pressed" from="pausable/UI/on_screen/double_fast_forward" to="." method="_on_double_fast_forward_pressed"]

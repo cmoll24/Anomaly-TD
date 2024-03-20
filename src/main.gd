@@ -267,6 +267,9 @@ func _on_laserbutton_pressed():
 func _on_emitterbutton_pressed():
 	load_tower(GlobalVariables.TOWERS.EMITTER)
 
+func _on_flambebutton_pressed():
+	load_tower(GlobalVariables.TOWERS.FLAMBE)
+
 func load_tower(tower):
 	if placing_turret and is_instance_valid(placing_turret):
 		placing_turret.free()
@@ -319,3 +322,4 @@ func _on_play_pressed():
 
 func _on_pause_pressed():
 	Engine.time_scale = 0
+
