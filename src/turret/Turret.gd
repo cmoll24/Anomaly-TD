@@ -31,26 +31,35 @@ func place():
 	range_indicator.z_index = -1
 	side_panel.close()
 
-func calculate_closest_target():
+func angle_to_target(target):
+	return (get_global_position()+offset).angle_to_point(target.global_position) + deg_to_rad(90) - rotation_point.rotation
+
+func calculate_closest_target_angle():
 	var closest_target = null
+	var closest_target_angle = null
 	for x in attack_collision.get_overlapping_bodies():
 		if x is Enemy:
+			var angle = angle_to_target(x)
+			#print(angle)
 			if closest_target and is_instance_valid(closest_target):
-				if global_position.distance_squared_to(x.global_position) < global_position.distance_squared_to(closest_target.global_position):
+				if abs(angle_difference(gun_rotation.rotation,angle)) < abs(angle_difference(gun_rotation.rotation,closest_target_angle)):
 					closest_target = x
 			else:
 				closest_target = x
-	return closest_target
+				closest_target_angle = angle
+	return [closest_target, closest_target_angle]
 
 
 func attack_process(delta):
-	var target = calculate_closest_target()
+	var new_target = calculate_closest_target_angle()
+	var target = new_target[0]
+	var target_angle = new_target[1]
+	
 	if target and is_instance_valid(target):
-		var target_direction = (get_global_position()+offset).angle_to_point(target.global_position+Vector2(8,8)) + deg_to_rad(90) - rotation_point.rotation
-		gun_rotation.rotation = lerp_angle(gun_rotation.rotation, target_direction, 5*delta)
+		gun_rotation.rotation = lerp_angle(gun_rotation.rotation, target_angle, 5*delta)
 		
 		#print(abs(angle_difference(rotation_point.rotation,target_direction)))
-		if can_attack and abs(angle_difference(gun_rotation.rotation,target_direction)) < 0.2:
+		if can_attack and abs(angle_difference(gun_rotation.rotation,target_angle)) < 0.2:
 			#attack.visible = true
 			target.damage(damage)
 			attack_cooldown.start()

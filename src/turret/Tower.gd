@@ -7,7 +7,7 @@ class_name Tower
 var disabled = true
 var attack_weight_area : Array[Rect2i] = [Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3),Rect2i(-1,-1,3,3)]
 
-var offset = Vector2(24,24)
+var offset = Vector2(16,16)
 
 var can_attack = true
 

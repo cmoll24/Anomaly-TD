@@ -37,7 +37,7 @@ var stats = {
 	TOWERS.LASER : {'path' : "res://src/turret/Laser.tscn", 'cost' : 30, 'name' : 'Laser',
 	'description' : "Powerful laser that deals damage over time in a straight line to one target.\n\nDeals 150 damage over 10s and cools down for 5s"},
 	TOWERS.FLAMBE : {'path' : "res://src/turret/Flambe.tscn", 'cost' : 75, 'name' : 'Flambé',
-	'description' : "Flamethrower that deals splash damage to 10 enemies in range.\n\nDeals 10 damage to 10 enemy and cools down for 4s"}
+	'description' : "Flamethrower that deals splash damage to 15 enemies in range.\n\nDeals 10 damage to 15 enemy and cools down for 4s"}
 	
 	}
 

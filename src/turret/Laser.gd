@@ -11,6 +11,16 @@ func _ready():
 	range_indicator.visible = true
 	side_panel.open(self)
 	
+func calculate_closest_target():
+	var closest_target = null
+	for x in attack_collision.get_overlapping_bodies():
+		if x is Enemy:
+			if closest_target and is_instance_valid(closest_target):
+				if global_position.distance_squared_to(x.global_position) < global_position.distance_squared_to(closest_target.global_position):
+					closest_target = x
+			else:
+				closest_target = x
+	return closest_target
 
 func attack_process(delta):
 	var target = null
