@@ -26,5 +26,5 @@ func attack_process(_delta):
 				attack_audio.play()
 				can_attack = false
 				
-				if i > 15:
+				if i > 12:
 					return

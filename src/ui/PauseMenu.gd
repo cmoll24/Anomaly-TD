@@ -30,7 +30,9 @@ func _on_resume_pressed():
 	close()
 
 func _on_quit_pressed():
-	get_tree().quit()
+	#get_tree().quit()
+	GlobalVariables.update_highscore()
+	var _error = get_tree().change_scene_to_file("res://src/title.tscn")
 	
 func _unhandled_input(event):
 	if event.is_action_pressed("toggle_pause"):

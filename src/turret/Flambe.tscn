@@ -76,7 +76,7 @@ stretch_mode = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="FlameParticlesLeft" type="GPUParticles2D" parent="rotation_point/gun_rotation"]
-position = Vector2(-10, -9)
+position = Vector2(-9, -15)
 rotation = -1.5708
 emitting = false
 amount = 500
@@ -86,7 +86,7 @@ one_shot = true
 speed_scale = 1.5
 
 [node name="FlameParticlesRight" type="GPUParticles2D" parent="rotation_point/gun_rotation"]
-position = Vector2(10, -9)
+position = Vector2(8, -15)
 rotation = -1.5708
 emitting = false
 amount = 500

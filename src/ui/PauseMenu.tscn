@@ -77,7 +77,13 @@ layout_mode = 2
 max_value = 1.0
 step = 0.01
 
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 0
+text = "Quit to Title"
+
 [connection signal="pressed" from="VBoxContainer/Resume" to="." method="_on_resume_pressed"]
 [connection signal="value_changed" from="VBoxContainer/MasterVolume" to="." method="_on_master_volume_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/sfxVolume" to="." method="_on_sfx_volume_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/musicVolume" to="." method="_on_music_volume_value_changed"]
+[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

@@ -10,6 +10,7 @@ extends Control
 @onready var flambe_button = $"pausable/UI/flambe-button"
 @onready var start_wave_button = $pausable/UI/start_wave
 
+@onready var rounds_label = $Overlay/Rounds
 @onready var game_speed_label = $pausable/UI/on_screen/Game_speed
 @onready var coins_label = $Overlay/Coins
 @onready var health_label = $Overlay/Player_health
@@ -168,6 +169,8 @@ func set_color_coins(button, coins, tower_type):
 func _process(delta):
 	on_screen_buttons.visible = placing_turret == null
 	
+	#waves_left_label.text = str(enemy_spawner.get_waves_left()) + " waves left"
+	rounds_label.text = "Round " + str(enemy_spawner.n_round)
 	game_speed_label.text = str(Engine.time_scale) + "x"
 	if Engine.time_scale == 0:
 		pause_button.visible = false
@@ -184,9 +187,9 @@ func _process(delta):
 	if waves_over:
 		next_wave_label.text = 'No more waves.'
 	elif time_left <= 1:
-		next_wave_label.text = 'Spawning wave!'
+		next_wave_label.text = str(enemy_spawner.get_waves_left()) + " waves left - " + 'Spawning wave!'
 	else:
-		next_wave_label.text = 'Next wave in ' + str(time_left) + 's'
+		next_wave_label.text = str(enemy_spawner.get_waves_left()) + " waves left - " + 'Next wave in ' + str(time_left) + 's'
 	coins_label.text = 'Coins: ' + str(coins)
 	health_label.text = 'Health: ' + str(GlobalVariables.get_player_health())
 	set_color_coins(turret_button, coins, GlobalVariables.TOWERS.TURRET)
@@ -202,7 +205,7 @@ func _process(delta):
 		music_controler.set_music_level(n_units, delta)
 		if waves_over and unit_tree.get_child_count() == 0 and not game_over:
 			waves_over = false
-			#score += 1
+			#n_waves += 1
 			#if is_instance_valid(placing_turret):
 			#	placing_turret.delete_tower()
 			shop.open()

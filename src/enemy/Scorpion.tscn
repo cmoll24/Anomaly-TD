@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bwxn3o4ybdvk" path="res://assets/enemy/Scorpion32x32.png" id="2_i770d"]
 [ext_resource type="Texture2D" uid="uid://ba4q7pawstoy0" path="res://assets/enemy/health-dot.png" id="3_07msv"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f3c53"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_yw78d"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uofll"]
 atlas = ExtResource("2_i770d")
@@ -219,7 +219,7 @@ motion_mode = 1
 script = ExtResource("1_72fmv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_f3c53")
+shape = SubResource("CircleShape2D_yw78d")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_fc5au")

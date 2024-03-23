@@ -8,6 +8,7 @@ class_name EnemyWaves
 
 @onready var timer = $Timer
 
+var n_round = 0
 var waves : Array
 var current_waves #Array[Array[enemies],time]
 var timing = 1
@@ -27,6 +28,7 @@ func remove_wave(enemy_type):
 	waves[enemy_type] -= 1
 
 func start_waves():
+	n_round += 1
 	var enemies = []
 	for enemy_type in range(len(waves)):
 		for i in range(waves[enemy_type]):
@@ -72,3 +74,5 @@ func end_waves():
 	emit_signal("waves_over")
 	timer.stop()
 
+func get_waves_left():
+	return len(current_waves)

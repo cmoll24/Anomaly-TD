@@ -165,11 +165,22 @@ text = "Health:"
 
 [node name="Next_wave" type="Label" parent="Overlay"]
 layout_mode = 0
-offset_left = 328.0
-offset_right = 449.0
-offset_bottom = 23.0
+offset_left = 176.0
+offset_top = 16.0
+offset_right = 639.0
+offset_bottom = 39.0
 scale = Vector2(0.9, 0.9)
 text = "Next wave in xs"
+horizontal_alignment = 1
+
+[node name="Rounds" type="Label" parent="Overlay"]
+layout_mode = 0
+offset_left = 356.0
+offset_top = 2.00001
+offset_right = 419.0
+offset_bottom = 25.0
+scale = Vector2(0.9, 0.9)
+text = "Round"
 
 [node name="Shop" parent="Overlay" node_paths=PackedStringArray("enemy_spawner") instance=ExtResource("2_tmk31")]
 visible = false
