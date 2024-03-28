@@ -38,8 +38,8 @@ var astargrid : AStarGrid2D
 var pheromones_grid : Dictionary # {loc: [number_of_emitters, actual_value]}
 var path_grid : Array[Vector2i]
 
-var enemy_path_start : Vector2
-var enemy_path_end : Vector2
+var enemy_path_start : Vector2i
+var enemy_path_end : Vector2i
 
 var placing_turret
 
@@ -54,17 +54,17 @@ func _ready():
 	terrain = load(GlobalVariables.current_map_path).instantiate()
 	terrain_tree.add_child(terrain)
 	
-	enemy_path_start = Vector2(academy.position/32)
-	enemy_path_end = Vector2(-2,-2)
+	enemy_path_start = Vector2i(academy.position/32)
+	enemy_path_end = Vector2i(-2,-2)
 	
 	screen_size = GlobalVariables.get_screen_size()
 	
 	grid_screen = Rect2i(-1,-1,int(screen_size.x/32)+2,int(screen_size.y/32)+2)
-	place_area = Rect2(Vector2(0,0),(grid_screen.size-Vector2i(2,2))*32)
+	place_area = Rect2(Vector2i(0,0),(grid_screen.size-Vector2i(2,2))*32)
 	#print(grid_screen)
 
 	astargrid = AStarGrid2D.new()
-	astargrid.set_offset(Vector2(16,16))
+	astargrid.set_offset(Vector2i(16,16))
 	astargrid.region = Rect2i(grid_screen.position - Vector2i(1,1), grid_screen.size + Vector2i(2,2))
 	astargrid.cell_size = GlobalVariables.GRID_CELL_SIZE
 	astargrid.default_compute_heuristic = AStarGrid2D.HEURISTIC_MANHATTAN
@@ -104,7 +104,7 @@ func create_navpath(start):
 	#print(path)
 	return path
 
-func test_solid_point(loc : Vector2):
+func test_solid_point(loc : Vector2i):
 	astargrid.set_point_solid(loc)
 	
 	if create_navpath(enemy_path_start*32).is_empty():
@@ -112,24 +112,24 @@ func test_solid_point(loc : Vector2):
 		return false
 	return true
 
-func set_nav_weight(loc : Vector2, attack_weight : Callable, attack_area : Rect2i):
+func set_nav_weight(loc : Vector2i, attack_weight : Callable, attack_area : Rect2i):
 	var pos = attack_area.position
 	var taille = attack_area.size
 	for i in range(pos.x, pos.x + taille.x):
 		for j in range(pos.y, pos.y + taille.y):
-			var new_loc = loc + Vector2(i,j)
+			var new_loc = loc + Vector2i(i,j)
 			if astargrid.is_in_bounds(new_loc.x, new_loc.y):
 				var old_weight = astargrid.get_point_weight_scale(new_loc)
 				var new_weight = max(attack_weight.call(old_weight, new_loc, pheromones_grid),0)
 				astargrid.set_point_weight_scale(new_loc, new_weight)
 
-func _on_side_panel_remove_weight(loc : Vector2, undo_weight : Callable, attack_area : Rect2i):
+func _on_side_panel_remove_weight(loc : Vector2i, undo_weight : Callable, attack_area : Rect2i):
 	astargrid.set_point_solid(loc, false)
 	var pos = attack_area.position
 	var taille = attack_area.size
 	for i in range(pos.x, pos.x + taille.x):
 		for j in range(pos.y, pos.y + taille.y):
-			var new_loc = loc + Vector2(i,j)
+			var new_loc = loc + Vector2i(i,j)
 			if astargrid.is_in_bounds(new_loc.x, new_loc.y):
 				var old_weight = astargrid.get_point_weight_scale(new_loc)
 				var new_weight = max(undo_weight.call(old_weight, new_loc, pheromones_grid),0)
@@ -213,24 +213,25 @@ func _process(delta):
 func spawn_unit(enemy_type : GlobalVariables.ENEMIES, pos):
 	var enemy
 	enemy = load(GlobalVariables.enemy_stats[enemy_type]['path']).instantiate()
-	enemy.set_position(pos.snapped(Vector2(GlobalVariables.GRID_CELL_SIZE)) + Vector2(16,16))
+	enemy.set_position(pos.snapped(GlobalVariables.GRID_CELL_SIZE) + Vector2i(16,16))
 	unit_tree.add_child(enemy)
 	#print(create_navpath(enemy.position,enemy.target))
 	enemy.start_navigation(create_navpath(enemy.position))
 	enemy.nav_agent = astargrid
+	enemy.pheromones_grid = pheromones_grid
+	enemy.path_grid = path_grid
 
 @onready var place_audio = $place_audio
 
 func place_turret(t, pos):
-	var grid_pos = (pos / Vector2(32,32)).floor()
+	var grid_pos = Vector2i(pos) / Vector2i(32,32)
 	
-	var grid_pos2i = Vector2i(grid_pos)
-	if not astargrid.is_point_solid(grid_pos2i) and grid_pos2i not in path_grid:
+	if not astargrid.is_point_solid(grid_pos) and grid_pos not in path_grid:
 		
 		if test_solid_point(grid_pos) == false:
 			return
 		set_nav_weight(grid_pos,t.get_attack_weight(),t.get_attack_weight_area())
-		t.set_position(grid_pos*Vector2(32,32))
+		t.set_position(grid_pos*Vector2i(32,32))
 		t.place()
 		place_audio.play()
 		GlobalVariables.change_coins(-t.get_cost())

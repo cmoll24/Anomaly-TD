@@ -24,7 +24,7 @@ func open(tower : Tower):#tower_type : GlobalVariables.TOWERS):
 	
 	if not current_tower.disabled:
 		sell_button.visible = true
-		sell_button.text = "Sell for " + str(round(current_tower.get_cost() * 0.75))
+		sell_button.text = "Sell for " + str(round(current_tower.get_cost() * 0.75)) + '  '
 
 func close():
 	visible = false

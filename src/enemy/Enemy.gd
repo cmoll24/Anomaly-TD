@@ -14,6 +14,8 @@ var screen_size : Vector2
 
 var navigating = false
 var nav_agent : AStarGrid2D
+var pheromones_grid : Dictionary # {loc: [number_of_emitters, actual_value]}
+var path_grid : Array[Vector2i]
 
 var health = 100
 var death_deterent = 1
@@ -68,10 +70,15 @@ func set_speed_mult(mult : float):
 func get_next_position():
 	if len(path) > 1:
 		if abs(position-path[0]).floor() == Vector2.ZERO:
-			if nav_agent.get_point_weight_scale(path[0]/32) < 5:
-				set_speed_mult(1.3)
-			else:
-				set_speed_mult(1)
+			var speed = 1
+			var grid_pos = Vector2i(path[0]/32)
+			modulate = Color.WHITE
+			if grid_pos in path_grid:
+				speed += 0.3
+			if grid_pos in pheromones_grid:
+				speed -= 0.3
+				modulate = Color(1,1,2)
+			set_speed_mult(speed)
 			#print('n',nav_agent.get_point_weight_scale(path[0]/32))
 			path.remove_at(0)
 		return path[0]
